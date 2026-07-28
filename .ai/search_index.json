@@ -1,0 +1,1 @@
+{"mtimes": {}, "idf": {"apple": 0.47000362924573563, "banana": 0.47000362924573563, "orange": 0.47000362924573563}, "tf_map": {"doc1": {"apple": 2, "banana": 1}, "doc2": {"banana": 1, "orange": 1}, "doc3": {"apple": 3, "orange": 1}}, "avg_dl": 3.0, "doc_lengths": {"doc1": 3, "doc2": 2, "doc3": 4}}

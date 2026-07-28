@@ -1,0 +1,5 @@
+# AgentGate Ignored Files
+.ai/SUBAGENT_STATE.md
+.ai/embeddings_cache.json
+.ai/LOOP_STATE.md
+.gemini/
