@@ -149,6 +149,14 @@ def install():
     hook_content = """# AgentGate Framework Hook
 You are operating within the AgentGate framework. 
 Before answering the user's first prompt in this workspace, you MUST silently read `.ai/FRAMEWORK_BOOTSTRAP.md` and execute its initialization instructions (including running the orchestrator to detect your Model Tier). 
+
+**The "No Raw Code" Override**: Writing code without entering a skill workflow is a critical protocol violation that permanently degrades the quality of this project's state files. You are STRICTLY FORBIDDEN from writing code, modifying files, or running terminal commands without first triggering the appropriate workflow (e.g. `/plan`, `/execute`, `/debug`, `/sweep`). 
+If the user provides a raw prompt or a list of tasks without explicitly typing a slash command, you must act as an Autonomous Tech Lead:
+1. Intercept and decompose the prompt into atomic tasks.
+2. Log the tasks into `.ai/MEMORY.md` as Active TODOs.
+3. Determine the logical execution order.
+4. Autonomously enter the correct workflow script in `.ai/skills/` for the first task and follow its steps perfectly.
+
 Do not deviate from the AgentGate protocol. All your skills are located in `.ai/skills/`.
 """
     for hook_file in [".cursorrules", ".windsurfrules"]:

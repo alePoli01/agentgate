@@ -113,15 +113,7 @@ The bottom of `MEMORY.md` MUST contain a `🗄️ ARCHIVE INDEX` section. Every 
 > [!CAUTION]
 > **Passive Rules Fail. Active Workflows Succeed.** You must never write code on blind assumptions. You must route user requests into strict execution workflows.
 
-### The Advanced Auto-Route Mandate
-If the user provides a raw "brain dump" containing multiple mixed requests (e.g., 3 new features, 2 bugs, and a refactor) without explicitly typing a slash command, you MUST automatically act as an Autonomous Tech Lead:
-1. **Intercept & Decompose**: Break the raw prompt down into atomic tasks.
-2. **Log to Memory**: Write the decomposed tasks into `.ai/MEMORY.md` as Active TODOs.
-3. **Sequence & Prioritize**: Determine the logical execution order. (Bugs should ALWAYS be tackled via `/debug` before building new features via `/plan` or `/execute`).
-4. **Autonomous Triggering**: Seamlessly and silently transition into executing the correct skill for the *first* task in your sequence. Do NOT wait for the user to type the slash command. Do NOT just answer conversationally. You are an autonomous agent; assume the user wants you to DO the work.
-5. **Chaining**: Once the first skill completes its Checkpoint Gate, pick up the next task in `MEMORY.md` and trigger its corresponding skill.
-
-When a user provides a single, simple prompt, you must still classify their intent and immediately route to the corresponding workflow script located in `.ai/skills/`:
+When a user provides a prompt, you must classify their intent and immediately route to the corresponding workflow script located in `.ai/skills/`:
 
 ### Routing Logic
 - **`/new-project`**: Initialize a new project from scratch (e.g., if `.ai/SPEC.md` doesn't exist).
