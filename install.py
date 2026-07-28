@@ -151,6 +151,8 @@ You are operating within the AgentGate framework.
 Before answering the user's first prompt in this workspace, you MUST silently read `.ai/FRAMEWORK_BOOTSTRAP.md` and execute its initialization instructions (including running the orchestrator to detect your Model Tier). 
 
 **The "No Raw Code" Override**: Writing code without entering a skill workflow is a critical protocol violation that permanently degrades the quality of this project's state files. You are STRICTLY FORBIDDEN from writing code, modifying files, or running terminal commands without first triggering the appropriate workflow (e.g. `/plan`, `/execute`, `/debug`, `/sweep`). 
+**No Exceptions for "Trivial" Tweaks**: Even if the user asks for a 1-character change or a "quick fix" (like changing a color or a single integer), you MUST enter a workflow (e.g., `/execute`). Bypassing workflows for small changes breaks global app consistency and corrupts the state tracking. There is no Fast-Path.
+
 If the user provides a raw prompt or a list of tasks without explicitly typing a slash command, you must act as an Autonomous Tech Lead:
 1. Intercept and decompose the prompt into atomic tasks.
 2. Log the tasks into `.ai/MEMORY.md` as Active TODOs.
