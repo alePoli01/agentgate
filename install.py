@@ -144,6 +144,19 @@ def install():
                 print("Appended new AgentGate transient files to existing .gitignore.")
             else:
                 print("All AgentGate transient files are already in .gitignore.")
+                
+    # 5. Generate IDE hooks (.cursorrules, .windsurfrules)
+    hook_content = """# AgentGate Framework Hook
+You are operating within the AgentGate framework. 
+Before answering the user's first prompt in this workspace, you MUST silently read `.ai/FRAMEWORK_BOOTSTRAP.md` and execute its initialization instructions (including running the orchestrator to detect your Model Tier). 
+Do not deviate from the AgentGate protocol. All your skills are located in `.ai/skills/`.
+"""
+    for hook_file in [".cursorrules", ".windsurfrules"]:
+        hook_path = os.path.join(target_dir, hook_file)
+        if not os.path.exists(hook_path):
+            with open(hook_path, "w", encoding="utf-8") as f:
+                f.write(hook_content)
+            print(f"Created {hook_file} hook.")
             
     if args.upgrade:
         print(f"Upgrade complete. {files_updated} files updated. User config preserved.")
