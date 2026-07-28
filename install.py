@@ -91,8 +91,8 @@ def install():
             except Exception as e:
                 print(f"Error copying {d}/: {e}")
                 
-    # 2. Copy root files (ARCHITECTURE.md, FRAMEWORK_BOOTSTRAP.md, VERSION.md)
-    files_to_copy = ["ARCHITECTURE.md", "FRAMEWORK_BOOTSTRAP.md", "VERSION.md"]
+    # 2. Copy root files (FRAMEWORK_BOOTSTRAP.md, VERSION.md)
+    files_to_copy = ["FRAMEWORK_BOOTSTRAP.md", "VERSION.md"]
     for f_name in files_to_copy:
         source_file = os.path.join(base_dir, f_name)
         target_file = os.path.join(ai_dir, f_name)

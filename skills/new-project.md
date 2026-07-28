@@ -10,7 +10,7 @@ Run this ONCE at the start of any new project before using /plan, /execute, or a
 Ask the user for:
 - **Project name** (used in all file headers)
 - **Project type** (Web App / CLI Tool / Library / API / Other)
-- **Model type** (Local or Cloud — sets the override file)
+- **Model type** (Local or Cloud) — "Local" enables strict memory-saving rules and shorter tasks for smaller models. "Cloud" enables faster execution for large context models (like Claude, GPT-4, Gemini).
 - **One-sentence goal** (the core "done" for this project)
 
 Do NOT proceed until all four are answered.
@@ -83,7 +83,7 @@ Project initialized via /new-project on {today's date}.
 
 ### Project Init — {today's date}
 - **Decision**: Project initialized with AgentGate framework.
-- **Model Type**: {Local or Cloud}
+- **Model Tier**: {Small, Medium, or Large}
 - **Rationale**: Starting fresh with framework scaffolding.
 ```
 
@@ -118,8 +118,7 @@ mcp_tools:
   browser: false
   filesystem: true
   git: false
-model_type: local  # or: cloud
-override_file: local-overrides.md  # or: cloud-overrides.md
+model_tier: Large  # or: Small/Medium
 ```
 
 ### Step 3b — Copy Rule Templates
