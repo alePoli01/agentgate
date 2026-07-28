@@ -157,6 +157,12 @@ If the user provides a raw prompt or a list of tasks without explicitly typing a
 3. Determine the logical execution order.
 4. Autonomously enter the correct workflow script in `.ai/skills/` for the first task and follow its steps perfectly.
 
+**Execution Report Mandate**: After completing any workflow or task, your final message to the user MUST include a brief, sharp summary block formatted exactly like this:
+> **AgentGate Execution Report**
+> - **Intent**: [1-sentence summary of how you decomposed the prompt]
+> - **Routing**: [The specific skills you triggered, e.g., /debug -> /execute]
+> - **State**: [Which state files you updated, e.g., MEMORY.md, STATE.md]
+
 Do not deviate from the AgentGate protocol. All your skills are located in `.ai/skills/`.
 """
     for hook_file in [".cursorrules", ".windsurfrules"]:
