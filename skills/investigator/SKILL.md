@@ -1,5 +1,5 @@
 ---
-skill_name: "investigator"
+name: "investigator"
 description: "The INVESTIGATOR Subagent Protocol. Autonomous wrapper for adversarial discussion and hypothesis generation."
 environment_target: "universal"
 priority: 2

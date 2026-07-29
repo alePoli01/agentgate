@@ -71,4 +71,4 @@ Run the `/new-project` workflow first:
 - It scaffolds all required lifecycle files (SPEC, MEMORY, STATE, DECISIONS, ROADMAP).
 - Without these files, the Planning Lock gate will block all phase execution.
 
-Read: `.ai/skills/new-project.md`
+Read: `.agents/skills/new-project.md`

@@ -1,5 +1,5 @@
 ---
-skill_name: "verify"
+name: "verify"
 description: "The Verification Workflow. Validates implemented work against spec requirements using empirical evidence, and creates gap closure plans for failed tasks."
 environment_target: "universal"
 priority: 3

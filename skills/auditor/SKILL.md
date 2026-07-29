@@ -1,5 +1,5 @@
 ---
-skill_name: "auditor"
+name: "auditor"
 description: "The AUDITOR Subagent Protocol. Defines the compliance, review, and verification workflow."
 environment_target: "universal"
 priority: 2

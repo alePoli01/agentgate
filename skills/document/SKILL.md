@@ -1,5 +1,5 @@
 ---
-skill_name: "document"
+name: "document"
 description: "The DOCUMENTOR role protocol. Defines the documentation generation and syncing workflow."
 environment_target: "universal"
 priority: 2

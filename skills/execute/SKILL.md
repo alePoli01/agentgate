@@ -1,5 +1,5 @@
 ---
-skill_name: "execute"
+name: "execute"
 description: "The Execution Workflow. Orchestrates coding tasks safely using Blast Radius Assessment and targeted tool execution."
 environment_target: "universal"
 priority: 1

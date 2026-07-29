@@ -1,5 +1,5 @@
 ---
-skill_name: "researcher"
+name: "researcher"
 description: "The RESEARCHER Subagent Protocol. Defines the read-only exploration and documentation workflow."
 environment_target: "universal"
 priority: 2

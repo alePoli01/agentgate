@@ -1,5 +1,5 @@
 ---
-skill_name: "resume"
+name: "resume"
 description: "The Resume Workflow. Onboards the agent into a fresh chat session by hydrating context and routing to the next optimal workflow."
 environment_target: "universal"
 priority: 1

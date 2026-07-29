@@ -1,5 +1,5 @@
 ---
-skill_name: "map"
+name: "map"
 description: "The Architect Workflow. Scans the codebase to generate and maintain a semantic structural map for blast radius coordination."
 environment_target: "universal"
 priority: 3

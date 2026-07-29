@@ -1,5 +1,5 @@
 ---
-skill_name: "test"
+name: "test"
 description: "The Test Quality Protocol. Defines how to write, run, and verify tests to prevent self-verification bias."
 environment_target: "universal"
 priority: 2

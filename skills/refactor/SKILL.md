@@ -1,5 +1,5 @@
 ---
-skill_name: "refactor"
+name: "refactor"
 description: "The Safe Refactoring Protocol. Ensures behavioral-preserving refactors backed by tests."
 environment_target: "universal"
 priority: 2

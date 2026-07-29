@@ -1,5 +1,5 @@
 ---
-skill_name: "sweep"
+name: "sweep"
 description: "The Sweep Workflow. Hunts for 'refuses' (dead code, orphaned imports, TODOs, legacy patterns) across the codebase using subagent delegation."
 environment_target: "universal"
 priority: 3

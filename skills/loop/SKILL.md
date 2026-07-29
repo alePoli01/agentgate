@@ -1,5 +1,5 @@
 ---
-skill_name: "loop"
+name: "loop"
 description: "The /loop workflow. Autonomous goal-oriented execution that persists until a verifiable termination condition is met."
 environment_target: "universal"
 priority: 2

@@ -1,5 +1,5 @@
 ---
-skill_name: "plan"
+name: "plan"
 description: "The Planning Workflow. Gathers requirements, defines technical standards, and creates implementation plans."
 environment_target: "universal"
 priority: 1

@@ -77,10 +77,10 @@ def install():
         print(f"Error: Permission denied when accessing '{target_dir}'.")
         sys.exit(1)
     
-    # 1. Copy directories (src/, skills/, core/, rules-templates/)
-    dirs_to_copy = ["src", "skills", "core", "rules-templates"]
+    # 1. Copy directories (src/, core/, rules-templates/) to .ai/
+    dirs_to_copy_ai = ["src", "core", "rules-templates"]
     files_updated = 0
-    for d in dirs_to_copy:
+    for d in dirs_to_copy_ai:
         source_dir = os.path.join(base_dir, d)
         target_dir_path = os.path.join(ai_dir, d)
         if os.path.exists(source_dir):
@@ -90,6 +90,17 @@ def install():
                 files_updated += sum(len(files) for _, _, files in os.walk(source_dir))
             except Exception as e:
                 print(f"Error copying {d}/: {e}")
+                
+    # 1.1. Copy skills/ to .agents/skills/
+    agents_skills_dir = os.path.join(target_dir, ".agents", "skills")
+    source_skills_dir = os.path.join(base_dir, "skills")
+    if os.path.exists(source_skills_dir):
+        try:
+            shutil.copytree(source_skills_dir, agents_skills_dir, dirs_exist_ok=True)
+            print(f"Copied skills/ to {agents_skills_dir}")
+            files_updated += sum(len(files) for _, _, files in os.walk(source_skills_dir))
+        except Exception as e:
+            print(f"Error copying skills/: {e}")
                 
     # 1.5. Clean up legacy root files from .ai/ directory
     legacy_files = ["FRAMEWORK_BOOTSTRAP.md", "VERSION.md"]
@@ -139,7 +150,7 @@ def install():
             for entry in ignore_entries:
                 f.write(f"{entry}\n")
         print("Created .gitignore and added AgentGate transient files.")
-    ignore_entries = [".ai/", "FRAMEWORK_BOOTSTRAP.md", "VERSION.md"]
+    ignore_entries = [".ai/", ".agents/", "FRAMEWORK_BOOTSTRAP.md", "VERSION.md"]
     if os.path.exists(gitignore_path):
         with open(gitignore_path, "r", encoding="utf-8") as f:
             content = f.read()
@@ -172,7 +183,7 @@ If the user provides a raw prompt or a list of tasks without explicitly typing a
 1. Intercept and decompose the prompt into atomic tasks.
 2. Log the tasks into `.ai/MEMORY.md` as Active TODOs.
 3. Determine the logical execution order.
-4. Autonomously enter the correct workflow script in `.ai/skills/` for the first task and follow its steps perfectly.
+4. Autonomously enter the correct workflow script in `.agents/skills/` for the first task and follow its steps perfectly.
 
 **Execution Report Mandate**: After completing any workflow or task, your final message to the user MUST include a brief, sharp summary block formatted exactly like this:
 > **AgentGate Execution Report**
@@ -180,7 +191,7 @@ If the user provides a raw prompt or a list of tasks without explicitly typing a
 > - **Routing**: [The specific skills you triggered, e.g., /debug -> /execute]
 > - **State**: [Which state files you updated, e.g., MEMORY.md, STATE.md]
 
-Do not deviate from the AgentGate protocol. All your skills are located in `.ai/skills/`.
+Do not deviate from the AgentGate protocol. All your skills are located natively in `.agents/skills/`.
 """
     for hook_file in [".cursorrules", ".windsurfrules"]:
         hook_path = os.path.join(target_dir, hook_file)
@@ -192,8 +203,9 @@ Do not deviate from the AgentGate protocol. All your skills are located in `.ai/
             # Safely patch existing hooks to fix the path
             with open(hook_path, "r", encoding="utf-8") as f:
                 content = f.read()
-            if ".ai/FRAMEWORK_BOOTSTRAP.md" in content:
+            if ".ai/FRAMEWORK_BOOTSTRAP.md" in content or ".ai/skills/" in content:
                 content = content.replace(".ai/FRAMEWORK_BOOTSTRAP.md", "FRAMEWORK_BOOTSTRAP.md")
+                content = content.replace(".ai/skills/", ".agents/skills/")
                 with open(hook_path, "w", encoding="utf-8") as f:
                     f.write(content)
                 print(f"Updated {hook_file} hook with new root path.")

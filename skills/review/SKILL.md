@@ -1,5 +1,5 @@
 ---
-skill_name: "review"
+name: "review"
 description: "The Code Review Workflow. Structured review with model-appropriate depth."
 environment_target: "universal"
 priority: 2

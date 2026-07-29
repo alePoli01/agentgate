@@ -1,5 +1,5 @@
 ---
-skill_name: "ui-designer"
+name: "ui-designer"
 description: "The UI/UX Designer Workflow. Platform-aware design system with consistency enforcement and optional GitHub design reference."
 environment_target: "universal"
 priority: 2

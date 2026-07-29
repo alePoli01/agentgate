@@ -1,5 +1,5 @@
 ---
-skill_name: "pause"
+name: "pause"
 description: "The Pause Workflow. Executes a State Dump and Context Compression to prevent context degradation and allow safe session transfer."
 environment_target: "universal"
 priority: 1

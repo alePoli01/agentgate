@@ -1,5 +1,5 @@
 ---
-skill_name: "debug"
+name: "debug"
 description: "The Debugging Workflow. Isolates issues using logical constraint checks and structural blast radius verification."
 environment_target: "universal"
 priority: 2

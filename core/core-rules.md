@@ -113,7 +113,7 @@ The bottom of `MEMORY.md` MUST contain a `🗄️ ARCHIVE INDEX` section. Every 
 > [!CAUTION]
 > **Passive Rules Fail. Active Workflows Succeed.** You must never write code on blind assumptions. You must route user requests into strict execution workflows.
 
-When a user provides a prompt, you must classify their intent and immediately route to the corresponding workflow script located in `.ai/skills/`:
+When a user provides a prompt, you must classify their intent and immediately route to the corresponding workflow script located in `.agents/skills/`:
 
 ### Routing Logic
 - **`/new-project`**: Initialize a new project from scratch (e.g., if `.ai/SPEC.md` doesn't exist).
@@ -131,7 +131,7 @@ When a user provides a prompt, you must classify their intent and immediately ro
 - **`/resume`**: Context Hygiene. Trigger to resume from a paused session.
 - **Questions/Exploration**: Handle directly. No heavy workflow needed.
 
-**Rule:** Do not invent your own execution steps. Once routed, you must follow the steps defined in the respective `.ai/skills/` markdown file perfectly.
+**Rule:** Do not invent your own execution steps. Once routed, you must follow the steps defined in the respective `.agents/skills/` markdown file perfectly.
 
 > [!TIP]
 > **Architecture Sync Reminder**: If you finish an Execution or Debug sprint where you created a significant number of new files or components, remind the user to run `/map` to sync the `.ai/ARCHITECTURE.md` file.

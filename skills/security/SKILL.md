@@ -1,5 +1,5 @@
 ---
-skill_name: "security"
+name: "security"
 description: "The SECURITY AUDITOR role protocol. Defines the security review specialist workflow."
 environment_target: "universal"
 priority: 2
