@@ -188,6 +188,15 @@ Do not deviate from the AgentGate protocol. All your skills are located in `.ai/
             with open(hook_path, "w", encoding="utf-8") as f:
                 f.write(hook_content)
             print(f"Created {hook_file} hook.")
+        elif args.upgrade:
+            # Safely patch existing hooks to fix the path
+            with open(hook_path, "r", encoding="utf-8") as f:
+                content = f.read()
+            if ".ai/FRAMEWORK_BOOTSTRAP.md" in content:
+                content = content.replace(".ai/FRAMEWORK_BOOTSTRAP.md", "FRAMEWORK_BOOTSTRAP.md")
+                with open(hook_path, "w", encoding="utf-8") as f:
+                    f.write(content)
+                print(f"Updated {hook_file} hook with new root path.")
             
     if args.upgrade:
         print(f"Upgrade complete. {files_updated} files updated. User config preserved.")
