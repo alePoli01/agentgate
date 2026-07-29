@@ -91,6 +91,17 @@ def install():
             except Exception as e:
                 print(f"Error copying {d}/: {e}")
                 
+    # 1.5. Clean up legacy root files from .ai/ directory
+    legacy_files = ["FRAMEWORK_BOOTSTRAP.md", "VERSION.md"]
+    for legacy_f in legacy_files:
+        legacy_path = os.path.join(ai_dir, legacy_f)
+        if os.path.exists(legacy_path):
+            try:
+                os.remove(legacy_path)
+                print(f"Cleaned up legacy file: {legacy_path}")
+            except OSError as e:
+                print(f"Warning: Could not remove legacy file {legacy_path}: {e}")
+
     # 2. Copy root files (FRAMEWORK_BOOTSTRAP.md, VERSION.md)
     files_to_copy = ["FRAMEWORK_BOOTSTRAP.md", "VERSION.md"]
     for f_name in files_to_copy:
