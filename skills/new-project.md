@@ -10,7 +10,7 @@ Run this ONCE at the start of any new project before using /plan, /execute, or a
 Ask the user for:
 - **Project name** (used in all file headers)
 - **Project type** (Web App / CLI Tool / Library / API / Other)
-- **Model type** (Local or Cloud) — "Local" enables strict memory-saving rules and shorter tasks for smaller models. "Cloud" enables faster execution for large context models (like Claude, GPT-4, Gemini).
+- **Model Tier** (Small, Medium, Large) — Small for local models (enables strict memory-saving rules). Large for powerful cloud models (enables deep context execution).
 - **One-sentence goal** (the core "done" for this project)
 
 Do NOT proceed until all four are answered.

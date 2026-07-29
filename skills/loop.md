@@ -36,7 +36,7 @@ Extract or ask for the following:
 ```
 GOAL:           [What must be built or fixed — one clear sentence]
 DONE WHEN:      [A shell command that returns exit code 0 when the goal is achieved]
-MAX ITERATIONS: [Cloud default: 10. Local default: 3. User can override.]
+MAX ITERATIONS: [Large default: 10. Small default: 3. User can override.]
 ```
 
 **Example:**
@@ -86,7 +86,7 @@ Then manually edit `.ai/LOOP_STATE.md` to set the goal line, model type, and max
 ```markdown
 ## /loop State
 - Goal: <goal text>
-- Model type: <local|cloud>
+- Model tier: <Small|Medium|Large>
 - Max iterations: <N>
 - Iteration: 0
 - Last check: <timestamp>
@@ -200,10 +200,10 @@ The loop exits when ANY of the following are true:
 |-----------|--------|
 | `--loop-check` returns exit code 0 | SUCCESS — print report, delete LOOP_STATE.md |
 | Loop counter reaches MAX ITERATIONS | HARD STOP — max iterations report |
-| 3 consecutive identical failures (cloud) | HARD STOP — 3-strike report, mandate /pause |
-| 2 consecutive identical failures (local) | HARD STOP — 2-strike report, mandate /pause |
-| [LOCAL] Context > 40% | PAUSE — context budget report |
-| [CLOUD] Context > 70% | PAUSE — context budget report |
+| 3 consecutive identical failures (Large tier) | HARD STOP — 3-strike report, mandate /pause |
+| 2 consecutive identical failures (Small tier) | HARD STOP — 2-strike report, mandate /pause |
+| [SMALL] Context > 40% | PAUSE — context budget report |
+| [LARGE] Context > 70% | PAUSE — context budget report |
 | User types STOP | IMMEDIATE STOP |
 
 ### Max Iterations Report
@@ -213,7 +213,7 @@ Last state: <describe what was achieved and what remains>
 Run /loop again with the remaining goal, or /debug to investigate the blocker.
 ```
 
-### 3-Strike Report (Cloud) / 2-Strike Report (Local)
+### 3-Strike Report (Large tier) / 2-Strike Report (Small tier)
 ```
 LOOP HALTED: Stagnant iterations detected. The approach is stuck.
 Run /pause to save state. Start a fresh session. Try a different approach.
@@ -226,8 +226,8 @@ Run /pause to save state. Start a fresh session. Try a different approach.
 ### The Strike Rule
 If consecutive iterations produce the exact same `--loop-check` failure output
 (same exit code AND same stderr):
-- **Cloud**: STOP after 3 consecutive stagnant failures.
-- **Local**: STOP after 2 consecutive stagnant failures (lower threshold — local models
+- **Large**: STOP after 3 consecutive stagnant failures.
+- **Small/Medium**: STOP after 2 consecutive stagnant failures (lower threshold — smaller models
   degrade faster and a third stagnant attempt wastes significant context budget).
 
 Note: Progressive failures (different errors, forward movement) do NOT count as strikes.
@@ -238,10 +238,10 @@ The `DONE WHEN` command must include a lighthouse audit, a screenshot diff, or a
 explicit `checkpoint:human-verify` step that pauses for user approval.
 The loop is only marked complete after explicit human approval.
 
-### Cloud Context Gate
-Cloud model context threshold: pause at **70%** usage.
+### Large Tier Context Gate
+Large tier model context threshold: pause at **70%** usage.
 ```
-LOOP PAUSED: Context at {N}%. Cloud model safety limit.
+LOOP PAUSED: Context at {N}%. Large tier safety limit.
 Run /pause then start a fresh session to continue.
 ```
 

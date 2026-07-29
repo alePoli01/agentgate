@@ -45,7 +45,7 @@ If you are modifying existing logic, functions, or components, you MUST assess t
 You must read the `<task>` XML block provided by the planner (or generate one yourself if simple). 
 When executing tasks, distinguish between tool types:
 - **Platform-native tools**: (e.g., `view_file`, `read_file` provided by your host IDE) can be used directly without the orchestrator.
-- **Orchestrator-mediated tools**: (e.g., file writes, command runs) must be executed via `execute-tool.md` pipeline if you are a local model.
+- **Orchestrator-mediated tools**: (e.g., file writes, command runs) must be executed via `execute-tool.md` pipeline if you are a Small tier model.
 
 > [!CAUTION]
 > **Context Health Check (The 3-Strike Rule)**
@@ -98,7 +98,7 @@ You must prove your implementation works to pass the Evidence Gate. You MUST loa
 >   You MUST fix it before the Checkpoint Gate. **Do NOT commit broken code.**
 >   This is a blocking failure — treat it the same as a failing `<verify>` command.
 
-1. **Self-Critique**: If you are a Cloud model, you MUST evaluate your own code against the requirements and output the result in the `<self-critique>` XML node.
+1. **Self-Critique**: If you are a Large tier model, you MUST evaluate your own code against the requirements and output the result in the `<self-critique>` XML node.
 2. **Execute `<verify>`**: Use the Terminal to run the project's test suite, compile the code, or execute the curl command specified in the `<verify>` node.
 3. **Capture `<evidence>`**: Paste the literal `stdout` or `stderr` from the terminal directly into the `<evidence>` node. Do not say "it should work"—prove it. If the task is visual/untestable, output `MANUAL_VERIFICATION_REQUIRED`.
 
@@ -127,13 +127,7 @@ Before marking this task as COMPLETE on the whiteboard or anywhere else, you MUS
 At the end of execution, if you created new files, routes, components, or database tables, you MUST silently append these new relationships to `.ai/ARCHITECTURE.md`. 
 You do not need to re-read the whole codebase to do this; just incrementally log the new structural connections you built so the map remains accurate.
 
-## Cloud Model Agnosticism
 
-This framework does NOT restrict cloud models.
-Cloud models follow the same execution workflow as local models.
-They are NOT routed to separate instructions unless the user has explicitly configured `.ai/core/cloud-overrides.md` for their project.
-
-The framework is local-model-first (optimized for constrained environments) but cloud-model-agnostic (cloud models work without penalty).
 
 ---
 

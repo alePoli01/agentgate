@@ -49,13 +49,13 @@ If the user has not explicitly thought about or addressed these aspects, you MUS
 ## 3. Smart Onboarding & Environment Config
 
 > [!TIP]
-> **Environment Awareness.** The framework behaves differently based on whether it is running on a Local or Cloud model.
+> **Environment Awareness.** The framework behaves differently based on its configured Model Tier (Small, Medium, or Large).
 
 On your first interaction in a workspace, **DO NOT** perform a tedious Q&A. Instead:
 1. **Auto-Detect**: Check your available tools (e.g., do you have `run_command`? You likely have CLI access). 
 2. **Read Config**: Check if `.ai/MODEL_ENV.md` exists. If it does, silently read it and apply its settings.
-3. **Prompt Once**: If `.ai/MODEL_ENV.md` is missing, tell the user what you auto-detected and ask them to confirm their model type (Local vs Cloud). 
-4. **Save**: Once the user answers, write the configuration to `.ai/MODEL_ENV.md` using clear YAML frontmatter and Markdown so it is readable by humans and scripts.
+3. **Prompt Once**: If `.ai/MODEL_ENV.md` is missing, stop and explicitly ask the user *"What AI model are you currently using to run this project?"* as instructed by `FRAMEWORK_BOOTSTRAP.md`.
+4. **Save**: Once the user answers, categorize their tier (Small, Medium, Large) and write the configuration to `.ai/MODEL_ENV.md` using clear YAML frontmatter and Markdown so it is readable by humans and scripts.
 5. **New Project Check**: If `.ai/SPEC.md` does not exist, stop all other onboarding steps and run `/new-project` immediately. All other workflows require SPEC.md to be FINALIZED.
 
 ### Override Routing

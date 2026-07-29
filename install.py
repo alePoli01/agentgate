@@ -95,7 +95,7 @@ def install():
     files_to_copy = ["FRAMEWORK_BOOTSTRAP.md", "VERSION.md"]
     for f_name in files_to_copy:
         source_file = os.path.join(base_dir, f_name)
-        target_file = os.path.join(ai_dir, f_name)
+        target_file = os.path.join(target_dir, f_name)
         if os.path.exists(source_file):
             try:
                 shutil.copy2(source_file, target_file)
@@ -128,27 +128,31 @@ def install():
             for entry in ignore_entries:
                 f.write(f"{entry}\n")
         print("Created .gitignore and added AgentGate transient files.")
-    else:
+    ignore_entries = [".ai/", "FRAMEWORK_BOOTSTRAP.md", "VERSION.md"]
+    if os.path.exists(gitignore_path):
         with open(gitignore_path, "r", encoding="utf-8") as f:
             content = f.read()
-            
+        
+        needs_update = False
         with open(gitignore_path, "a", encoding="utf-8") as f:
-            added = False
             for entry in ignore_entries:
                 if entry not in content:
-                    if not added:
-                        f.write("\n# AgentGate Ignored Files\n")
-                        added = True
-                    f.write(f"{entry}\n")
-            if added:
-                print("Appended new AgentGate transient files to existing .gitignore.")
-            else:
-                print("All AgentGate transient files are already in .gitignore.")
+                    f.write(f"\n{entry}\n")
+                    needs_update = True
+        
+        if needs_update:
+            print("Added AgentGate files to .gitignore.")
+        else:
+            print("All AgentGate transient files are already in .gitignore.")
+    else:
+        with open(gitignore_path, "w", encoding="utf-8") as f:
+            f.write("".join([f"{entry}\n" for entry in ignore_entries]))
+        print("Created .gitignore and ignored AgentGate files.")
                 
     # 5. Generate IDE hooks (.cursorrules, .windsurfrules)
     hook_content = """# AgentGate Framework Hook
 You are operating within the AgentGate framework. 
-Before answering the user's first prompt in this workspace, you MUST silently read `.ai/FRAMEWORK_BOOTSTRAP.md` and execute its initialization instructions (including running the orchestrator to detect your Model Tier). 
+Before answering the user's first prompt in this workspace, you MUST silently read `FRAMEWORK_BOOTSTRAP.md` and execute its initialization instructions (including running the orchestrator to detect your Model Tier). 
 
 **The "No Raw Code" Override**: Writing code without entering a skill workflow is a critical protocol violation that permanently degrades the quality of this project's state files. You are STRICTLY FORBIDDEN from writing code, modifying files, or running terminal commands without first triggering the appropriate workflow (e.g. `/plan`, `/execute`, `/debug`, `/sweep`). 
 **No Exceptions for "Trivial" Tweaks**: Even if the user asks for a 1-character change or a "quick fix" (like changing a color or a single integer), you MUST enter a workflow (e.g., `/execute`). Bypassing workflows for small changes breaks global app consistency and corrupts the state tracking. There is no Fast-Path.
