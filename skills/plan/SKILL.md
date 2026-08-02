@@ -82,6 +82,8 @@ For any technology where the user does NOT provide explicit rules, you MUST defi
 ## Step 5: Adaptive Routing (XML Task Generation)
 You must break down the implementation into `<task>` XML blocks (defined in `task-schema.md`).
 
+**Formatting Rule**: You MUST pretty-print and indent all `<task>` XML blocks (including nested tags and content) so they are clean and easy for the user to read.
+
 **The Token Tax Mitigation Rule**:
 - **Low Effort Tasks (1-2 steps)**: Generate the `<task>` blocks inline within the main conversation and proceed to execute them directly.
 - **Medium/High Effort Tasks**: Do NOT generate massive XML blocks in the main conversation. You MUST delegate to a `planner` subagent. Instruct the subagent to reason through the steps and write the resulting XML `<task>` blocks to a plan file (e.g., `.ai/phases/N/1-PLAN.md`). 
