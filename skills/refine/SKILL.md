@@ -29,7 +29,14 @@ Format your response exactly like this:
 > 
 > *Shall I proceed with step 1?*
 
-## Step 4: Execution & Handoff
+## Step 4: Execution & Handoff (STRICT ADHERENCE)
 Once the user approves the preview:
 1. Log the tasks into the working memory (`.ai/MEMORY.md`).
-2. Immediately launch into the first skill in your list (e.g., follow the instructions in `plan/SKILL.md` or `execute/SKILL.md`).
+2. For **each** skill in your decomposed list, you MUST:
+   a. **Read** the corresponding `SKILL.md` file (e.g., `skills/execute/SKILL.md`, `skills/verify/SKILL.md`).
+   b. **Follow every numbered step** defined in that file. You are not permitted to improvise, skip steps, or execute the "spirit" of the skill without following the actual protocol.
+   c. **Complete all gates** (e.g., Checkpoint Gate, Evidence Gate) before moving to the next skill in the list.
+3. After completing a skill, announce to the user which skill was just completed and which skill is next.
+
+> [!CAUTION]
+> `/refine` is a **router**, not a shortcut. It decomposes work into skills, but it does NOT grant permission to skip the steps inside those skills. Every gate, every checkpoint, every verification step inside the child skill MUST be honored.
