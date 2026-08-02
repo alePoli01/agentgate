@@ -118,7 +118,7 @@ When a user provides a prompt, you must classify their intent and immediately ro
 ### Routing Logic
 - **`/refine`**: Tech Lead Router. Trigger to decompose a raw user prompt and preview the skills to be used before executing.
 - **`/new-project`**: Initialize a new project from scratch (e.g., if `.ai/SPEC.md` doesn't exist).
-- **`/plan`**: Planning & Architecture. MANDATORY before execution to establish project rules.
+- **`/plan`**: Planning & Architecture. Highly recommended for new features or architectural changes. The model must judge if a plan is necessary based on task complexity; minor bug fixes or trivial tweaks may skip directly to execution.
 - **`/execute`**: Feature/Implementation. Trigger when writing code.
 - **`/debug`**: Debugging/Errors. Trigger when the user provides an error, stack trace, or says "it doesn't work".
 - **`/map`**: Architectural Mapping. Trigger to get a codebase overview or update `.ai/ARCHITECTURE.md`.
