@@ -1,12 +1,12 @@
 ---
-name: "prompt"
+name: "refine"
 description: "The Autonomous Tech Lead Router. Analyzes a raw user prompt, decomposes it into atomic tasks, and explicitly previews the necessary skills before executing them."
 environment_target: "universal"
 priority: 1
 ---
-# The Prompt Router Protocol
+# The Refine Router Protocol
 
-**Trigger**: The user explicitly typed `/prompt <their request>` or requested you to act as the Tech Lead to decompose a complex task.
+**Trigger**: The user explicitly typed `/refine <their request>` or requested you to act as the Tech Lead to decompose a complex task.
 
 > [!NOTE]  
 > You are acting as the Autonomous Tech Lead. Your goal is to intercept a raw, complex prompt and translate it into strict AgentGate workflow steps.

@@ -116,7 +116,7 @@ The bottom of `MEMORY.md` MUST contain a `🗄️ ARCHIVE INDEX` section. Every 
 When a user provides a prompt, you must classify their intent and immediately route to the corresponding workflow script located in `.agents/skills/`:
 
 ### Routing Logic
-- **`/prompt`**: Tech Lead Router. Trigger to decompose a raw user prompt and preview the skills to be used before executing.
+- **`/refine`**: Tech Lead Router. Trigger to decompose a raw user prompt and preview the skills to be used before executing.
 - **`/new-project`**: Initialize a new project from scratch (e.g., if `.ai/SPEC.md` doesn't exist).
 - **`/plan`**: Planning & Architecture. MANDATORY before execution to establish project rules.
 - **`/execute`**: Feature/Implementation. Trigger when writing code.

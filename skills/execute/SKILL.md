@@ -38,9 +38,10 @@ Even if a rule is not explicitly defined in the `.ai/rules/` directory, you must
 
 ## Step 3: Blast Radius Assessment
 If you are modifying existing logic, functions, or components, you MUST assess the "ripple effect" before making the change:
-1. Consult `.ai/ARCHITECTURE.md` to identify which modules depend on the code you are about to change.
-2. Run targeted `grep` searches (or use AST-aware tools) *only* inside those dependent modules to find usages.
-3. Update all dependent files simultaneously alongside your primary change.
+1. **Semantic Awareness**: Consult `.ai/ARCHITECTURE.md` to understand high-level architectural dependencies (e.g., if you change the DB schema, the API layer will break). Do not assume this file contains every granular dependency.
+2. **Codebase-Wide Verification**: You MUST run a global `grep` search across the entire project for the specific function name, class, or component you are modifying to find all actual usages. Do NOT restrict your search only to the modules listed in the architecture file.
+3. **Atomic Updates**: Update all dependent files simultaneously alongside your primary change to prevent breaking the build.
+
 
 You must read the `<task>` XML block provided by the planner (or generate one yourself if simple). 
 When executing tasks, distinguish between tool types:
