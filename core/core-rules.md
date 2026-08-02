@@ -116,6 +116,7 @@ The bottom of `MEMORY.md` MUST contain a `🗄️ ARCHIVE INDEX` section. Every 
 When a user provides a prompt, you must classify their intent and immediately route to the corresponding workflow script located in `.agents/skills/`:
 
 ### Routing Logic
+- **`/prompt`**: Tech Lead Router. Trigger to decompose a raw user prompt and preview the skills to be used before executing.
 - **`/new-project`**: Initialize a new project from scratch (e.g., if `.ai/SPEC.md` doesn't exist).
 - **`/plan`**: Planning & Architecture. MANDATORY before execution to establish project rules.
 - **`/execute`**: Feature/Implementation. Trigger when writing code.
@@ -131,7 +132,7 @@ When a user provides a prompt, you must classify their intent and immediately ro
 - **`/resume`**: Context Hygiene. Trigger to resume from a paused session.
 - **Questions/Exploration**: Handle directly. No heavy workflow needed.
 
-**Rule:** Do not invent your own execution steps. Once routed, you must follow the steps defined in the respective `.agents/skills/` markdown file perfectly.
+**Rule:** Do not invent your own execution steps. Once routed, you must follow the steps defined in the respective `.agents/skills/` markdown file perfectly. Additionally, **before executing the workflow, you MUST explicitly state to the user which skill(s) or workflow(s) you have selected to process their request**, ensuring transparency.
 
 > [!TIP]
 > **Architecture Sync Reminder**: If you finish an Execution or Debug sprint where you created a significant number of new files or components, remind the user to run `/map` to sync the `.ai/ARCHITECTURE.md` file.
