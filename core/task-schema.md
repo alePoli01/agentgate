@@ -20,7 +20,7 @@ priority: 0
 > All execution and planning workflows MUST output task definitions using this exact XML structure.
 
 ```xml
-<task type="auto|manual" effort="low|medium|high">
+<task type="auto|manual" effort="low|medium|high" skill="execute|debug|verify|refactor|test|review|security">
   <name>Clear descriptive name</name>
   <depends_on>T-xxx</depends_on>
   <priority>high|normal|low</priority>
@@ -49,6 +49,7 @@ priority: 0
 
 - `type`: "auto" for tasks the agent can do itself, "manual" for tasks requiring user action (e.g., creating a cloud account).
 - `effort`: "low" (simple edits), "medium" (multi-file or logical changes), "high" (architectural refactor).
+- `skill`: **(NEW)** The AgentGate skill to use when executing this task. Defaults to `execute` if omitted. When the agent picks up this task, it MUST read and follow the corresponding `skills/<skill>/SKILL.md` file. Common values: `execute` (build features), `debug` (diagnose and fix bugs), `verify` (validate behavior), `refactor` (restructure without changing behavior), `test` (write tests), `review` (code review), `security` (security audit).
 - `<depends_on>`: (Optional) Task ID that must be COMPLETE before this task can be routed.
 - `<priority>`: (Optional) "high", "normal", or "low" to guide the orchestrator's queue.
 - `<files>`: Comma-separated list of files this task targets.
