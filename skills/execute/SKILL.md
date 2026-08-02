@@ -17,6 +17,17 @@ priority: 1
 > [!NOTE]
 > Check your orchestrator tier banner (`[TIER: X]`). If you are **[TIER: SMALL]**, refer to the "Condensed Execution Checklist" at the bottom of this file to save context while executing.
 
+## Auto-Include Policies (MANDATORY Pre-Flight)
+Before executing, inspect the `<files>` listed in the task. If ANY file matches a condition below, you MUST load and apply the corresponding skill. This is NOT optional.
+
+| Condition on `<files>` | Auto-Include Skill |
+|---|---|
+| File is a view, screen, layout, component, or stylesheet (e.g., `*Screen.kt`, `*View.kt`, `*.jsx`, `*.tsx`, `*.html`, `*.css`, `*.xml` layout) | Read `skills/ui-designer/SKILL.md` and apply its platform-specific rules to all UI code written |
+| File touches authentication, crypto, API keys, tokens, passwords, or user input validation | Read `skills/security/SKILL.md` and apply its rules before writing any logic |
+| Task modifies a public API, shared interface, or exported function/component used by other modules | Read `skills/review/SKILL.md` and run a self-review pass on the output before the Checkpoint Gate |
+
+> [!CAUTION]
+> Skipping an Auto-Include Policy because the task "seems simple" is a protocol violation. The detection is file-based, not judgment-based. If the file matches, the skill loads.
 
 ## Step 1: Pre-Flight Check (The Standards Check)
 Before you write a single line of code, you MUST understand the project coding standards.

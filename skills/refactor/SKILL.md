@@ -11,6 +11,17 @@ priority: 2
 > [!CAUTION]
 > A refactor MUST NOT change observable behavior. If you are adding features or fixing bugs at the same time, it is NOT a refactor.
 
+## Auto-Include Policies (MANDATORY Pre-Flight)
+Before refactoring, inspect the `<files>` listed in the task. If ANY file matches a condition below, you MUST load and apply the corresponding skill.
+
+| Condition on `<files>` | Auto-Include Skill |
+|---|---|
+| File is a view, screen, layout, or component (e.g., `*Screen.kt`, `*.jsx`, `*.css`, `*.xml` layout) | Read `skills/ui-designer/SKILL.md` — ensure the refactor does not break platform design consistency |
+| File touches a public API, shared interface, or module boundary | Read `skills/review/SKILL.md` — run a self-review pass to confirm the API contract is unchanged |
+
+> [!CAUTION]
+> Skipping an Auto-Include Policy is a protocol violation. The detection is file-based, not judgment-based.
+
 ## Step 1: Test Suite Verification (MANDATORY)
 You are strictly forbidden from refactoring code that does not have tests.
 1. Use `grep_search` to find tests related to the target code.

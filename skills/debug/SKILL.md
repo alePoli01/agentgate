@@ -11,6 +11,17 @@ priority: 2
 > [!NOTE]
 > Check your orchestrator tier banner (`[TIER: X]`). This determines your context limits for debugging.
 
+## Auto-Include Policies (MANDATORY Pre-Flight)
+Before debugging, inspect the `<files>` listed in the task. If ANY file matches a condition below, you MUST load and apply the corresponding skill.
+
+| Condition on `<files>` | Auto-Include Skill |
+|---|---|
+| Bug is visual (layout, styling, animation, component rendering) — e.g., `*Screen.kt`, `*.jsx`, `*.css`, `*.xml` layout | Read `skills/ui-designer/SKILL.md` — apply platform rules to any UI fix written |
+| Bug involves auth flows, tokens, API keys, input validation, or data exposure | Read `skills/security/SKILL.md` — ensure the fix does not introduce a security regression |
+
+> [!CAUTION]
+> Skipping an Auto-Include Policy because the bug "seems trivial" is a protocol violation. The detection is file-based, not judgment-based. If the file matches, the skill loads.
+
 ## Step 1: Reproduce
 You MUST NOT guess what the problem is. Use the Terminal to run the failing code and view the stack trace or output yourself. Ensure you can reproduce the user's issue locally.
 
