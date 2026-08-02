@@ -16,7 +16,8 @@ priority: 2
 2. [Platform-Specific Design Rules](#2-platform-specific-design-rules)
 3. [GitHub Reference Model](#3-github-reference-model-optional-enhancement)
 4. [Consistency Enforcement](#4-consistency-enforcement)
-5. [Template Selection & User Preferences](#5-template-selection--user-preferences)
+5. [UI Token Registry Protocol](#5-ui-token-registry-protocol)
+6. [Template Selection & User Preferences](#6-template-selection--user-preferences)
 
 ---
 
@@ -115,7 +116,82 @@ If any check fails, fix it before declaring the task complete.
 
 ---
 
-## 5. Template Selection & User Preferences
+## 5. UI Token Registry Protocol
+
+> [!IMPORTANT]
+> **Persistent Design Memory.** UI decisions MUST survive context slides and session boundaries. You must actively maintain a `.ai/UI_TOKENS.md` file in the project root.
+
+### 5a. The Read Rule (MANDATORY — Before Writing ANY UI Code)
+Before writing or modifying any UI code, check if `.ai/UI_TOKENS.md` exists.
+- If it **exists**: Read it. Any spacing, typography, color, or component value already recorded there is a **hard constraint**. You MUST use the recorded value. Do NOT deviate unless the user explicitly requests a change.
+- If it **does not exist**: You will create it after completing your first UI task (see Write Rule below).
+
+### 5b. The Write Rule (MANDATORY — After Completing ANY UI Task)
+After finishing a UI task, review what values you used. If you introduced ANY new token (a padding value, a font style, a color role, a component dimension) that is not yet in `.ai/UI_TOKENS.md`, you MUST append it before marking the task complete.
+
+If the file does not exist yet, create it using the template below.
+
+### 5c. Template Structure
+The file uses a 3-layer hybrid structure. Populate only the sections relevant to your project — do not add empty placeholder sections.
+
+```markdown
+# UI Token Registry
+Platform: [Detected platform, e.g., Android Native (Material Design 3)]
+Last Updated: [Date]
+
+## 1. Global Tokens (shared across entire app)
+
+### Spacing Scale
+| Token | Value |
+|---|---|
+| Base Unit | 4.dp |
+| Content Padding | 12.dp |
+| Section Gap | 8.dp |
+
+### Typography Scale
+| Role | Style |
+|---|---|
+| Screen Header | titleLarge + FontWeight.Bold |
+| Card Title | bodyLarge |
+| Caption | labelSmall |
+
+### Color Roles
+| Role | Value |
+|---|---|
+| Destructive Action | colorScheme.error |
+| Highlight / Attention | colorScheme.primaryContainer |
+
+### Shape Tokens
+| Role | Value |
+|---|---|
+| Card Corner Radius | medium (12.dp) |
+
+## 2. Component Tokens (reusable UI pieces)
+
+### [ComponentName]
+| Property | Value |
+|---|---|
+| Inner Padding | 12.dp |
+| Elevation | 1.dp |
+
+## 3. Screen-Specific Overrides (deviations only)
+
+### [ScreenName]
+- [Description of what deviates from global/component defaults]
+```
+
+> [!CAUTION]
+> **Layer 3 is append-only and small.** It documents *exceptions*, not norms. If a value applies to most screens, it belongs in Layer 1 (Global) or Layer 2 (Component), not here.
+
+### 5d. Updating Existing Tokens
+If the user explicitly requests changing a token value (e.g., "change card padding from 12dp to 16dp"):
+1. Update the value in `.ai/UI_TOKENS.md`.
+2. Check the **"Used In"** column or component references to identify all files that use this token.
+3. Update ALL affected files in the same task. Do not leave inconsistencies.
+
+---
+
+## 6. Template Selection & User Preferences
 
 If the user provides design preferences in their prompt, they MUST guide the output:
 
