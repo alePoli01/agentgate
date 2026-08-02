@@ -44,6 +44,10 @@ If you are modifying existing logic, functions, or components, you MUST assess t
 
 
 You must read the `<task>` XML block provided by the planner (or generate one yourself if simple). 
+
+> [!IMPORTANT]
+> **Smart Dispatcher Rule**: Check the `skill` attribute of the `<task>`. If it is specified and is NOT `execute` (e.g., `skill="debug"`, `skill="refactor"`, `skill="verify"`), you MUST immediately STOP reading this file, load the corresponding `skills/<skill>/SKILL.md` file, and follow its workflow instead.
+
 When executing tasks, distinguish between tool types:
 - **Platform-native tools**: (e.g., `view_file`, `read_file` provided by your host IDE) can be used directly without the orchestrator.
 - **Orchestrator-mediated tools**: (e.g., file writes, command runs) must be executed via `execute-tool.md` pipeline if you are a Small tier model.
