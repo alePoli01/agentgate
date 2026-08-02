@@ -1,3 +1,21 @@
+# 0.4.0-alpha
+
+**Date:** 2026-08-02
+
+## Summary
+The "Framework Hardening" Update. Major improvements to planning, skill routing, design consistency, and host IDE overrides.
+
+## What Changed
+- **Skill-Per-Task Routing (Smart Dispatcher)**: `/execute` now automatically routes XML tasks to alternative skills (e.g., `skill="debug"`) if specified in the plan, eliminating the need to manually invoke different workflows for a single phase.
+- **Auto-Include Policies**: Minor skills (`ui-designer`, `security`, `review`) are now automatically loaded as mandatory pre-flight checks in major workflows based on file-detection (e.g., modifying `*Screen.kt` auto-loads `ui-designer`).
+- **UI Token Registry**: `/ui-designer` now mandates the creation and strict adherence to `.ai/UI_TOKENS.md`. UI decisions (padding, colors, typography) are now actively recorded and persisted across context slides.
+- **Native IDE Override Mandate**: Added a strict rule to `core-rules.md` and `plan/SKILL.md` to aggressively block host IDEs (like Antigravity or Cursor) from injecting their own native planning artifacts (`implementation_plan.md`, `task.md`), forcing reliance on `.ai/STATE.md` and XML plans.
+
+## Previous Version
+0.3.0-alpha — Autonomous Loop Execution.
+
+---
+
 # 0.3.0-alpha
 
 **Date:** 2026-07-10
