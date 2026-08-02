@@ -125,11 +125,23 @@ When a user provides a prompt, you must classify their intent and immediately ro
 - **`/verify`**: Validation. Trigger to verify implementation against requirements.
 - **`/test`**: Testing. Trigger to generate or run test suites.
 - **`/discuss`**: Investigation. Trigger to explore a topic without modifying code.
-- **`/sweep`**: Codebase Cleanup. Trigger to hunt for dead code, TODOs, and architectural refuses using subagent delegation.
+- **`/sweep`**: Codebase Cleanup. Trigger to hunt for dead code, TODOs, and architectural refuses.
 - **`/delegate`**: Subagents. Trigger to spawn and manage subagents for tasks.
 - **`/loop`**: Iteration. Trigger to run an automated iterative loop.
 - **`/pause`**: Context Hygiene. Trigger to dump state and pause session.
 - **`/resume`**: Context Hygiene. Trigger to resume from a paused session.
+- **`/architect`**: Generate and score 3 distinct architectural options.
+- **`/auditor`**: Compliance, review, and verification workflow.
+- **`/coder`**: Direct implementation of tasks without architectural design.
+- **`/document`**: Documentation generation and syncing workflow.
+- **`/execute-tool`**: Executes external tools using Decoupled Tool Calling.
+- **`/investigator`**: Debugging and root-cause analysis subagent.
+- **`/refactor`**: Behavioral-preserving safe refactoring backed by tests.
+- **`/researcher`**: Read-only codebase exploration and documentation subagent.
+- **`/review`**: Structured Code Review workflow.
+- **`/security`**: Security review specialist workflow.
+- **`/ui-designer`**: Platform-aware design system enforcement.
+- **`/upgrade`**: Automatically updates the current project's framework files.
 - **Questions/Exploration**: Handle directly. No heavy workflow needed.
 
 **Rule:** Do not invent your own execution steps. Once routed, you must follow the steps defined in the respective `.agents/skills/` markdown file perfectly. Additionally, **before executing the workflow, you MUST explicitly state to the user which skill(s) or workflow(s) you have selected to process their request**, ensuring transparency.
