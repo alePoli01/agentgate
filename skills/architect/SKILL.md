@@ -1,3 +1,9 @@
+---
+name: "architect"
+description: "The Architecture Workflow. Generates and evaluates high-level blueprints using LLM-as-a-judge against Context Altitude constraints."
+environment_target: "universal"
+priority: 3
+---
 # Architect Subagent Protocol
 
 <role>

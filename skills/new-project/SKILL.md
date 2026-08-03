@@ -1,3 +1,9 @@
+---
+name: "new-project"
+description: "Initializes a new project, establishes constraints, and generates the initial architecture."
+environment_target: "universal"
+priority: 3
+---
 # /new-project Workflow
 
 ## Objective

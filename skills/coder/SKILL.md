@@ -1,3 +1,9 @@
+---
+name: "coder"
+description: "The Coder Subagent Protocol. Executes structural blueprints strictly without making high-level architectural decisions."
+environment_target: "universal"
+priority: 3
+---
 # Coder Subagent Protocol
 
 <role>

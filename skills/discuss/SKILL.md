@@ -1,3 +1,9 @@
+---
+name: "discuss"
+description: "The Investigation Workflow. Explore topics, clarify ambiguity, and generate adversarial hypotheses."
+environment_target: "universal"
+priority: 3
+---
 # /discuss Workflow
 
 <role>
