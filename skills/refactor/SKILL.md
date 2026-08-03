@@ -56,3 +56,11 @@ Once tests are green, commit the change:
 ```bash
 git add -A && git commit -m "refactor: [component] [reason]"
 ```
+
+## Workflow Hooks (Conditional Internal Skill Invocations)
+These hooks fire automatically at specific points during refactoring when conditions are met.
+
+| Trigger Condition | Invoke | Action |
+|---|---|---|
+| Step 4 — if function signatures, class names, or module boundaries changed | `/document` | Read `skills/document/SKILL.md`. Update all affected docstrings so documentation does not go stale |
+| Step 5 — if the refactor touched >5 files | `/auditor` | Spawn an `/auditor` subagent via `/delegate` to run a compliance check against `SPEC.md` and confirm the refactor did not violate requirements |

@@ -145,3 +145,11 @@ Once all subagents have reported and machine checks are done, compile into `.ai/
 2. [MANUAL] Sync ARCHITECTURE.md with actual rag.py caching implementation
 3. [MANUAL] Resolve placeholder tools in tools.py (implement or remove)
 ```
+
+## Workflow Hooks (Conditional Internal Skill Invocations)
+These hooks fire automatically at specific points during the sweep when conditions are met.
+
+| Trigger Condition | Invoke | Action |
+|---|---|---|
+| After removing dead code or files | `/document` | Read `skills/document/SKILL.md`. Remove stale documentation references (docstrings, README entries, ARCHITECTURE.md mentions) to deleted code |
+| Step 2 (Refuse Checklist) — when evaluating whether code is truly "dead" and grep results are ambiguous | `/researcher` | Spawn a read-only `/researcher` subagent via `/delegate` to exhaustively confirm no hidden usages exist before marking code as dead |

@@ -60,6 +60,8 @@ Discovery is MANDATORY unless you can prove the necessary context already exists
 - High-risk, hard to change later
 - Action: Full research with `RESEARCH.md`
 
+**Workflow Hook — Research Delegation**: For Level 2+ research, if you are **[TIER: SMALL]** or the research scope is broad (multiple libraries/APIs to compare), spawn a read-only `/researcher` subagent via `/delegate` to conduct the research. This preserves your planner context for task generation.
+
 ---
 
 ## Step 1: Intent Check

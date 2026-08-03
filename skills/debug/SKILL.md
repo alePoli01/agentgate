@@ -55,3 +55,11 @@ Before modifying an existing function or component to fix a logical bug, you MUS
 You are strictly forbidden from violating the project coding standards (in `.ai/rules/`) to force a fix. 
 - If you find a fix that aligns with the rules, implement it and verify via the Terminal.
 - If you cannot find a fix without violating the established rules, **you MUST stop and propose a workaround to the user** before proceeding. Do not silently degrade the codebase.
+
+## Workflow Hooks (Conditional Internal Skill Invocations)
+These hooks fire automatically at specific points during debugging when conditions are met.
+
+| Trigger Condition | Invoke | Action |
+|---|---|---|
+| Step 3 — if 2 hypothesis cycles fail without identifying root cause | `/investigator` | Spawn an autonomous `/investigator` subagent via `/delegate` to adversarially generate competing hypotheses in parallel |
+| After fix is applied — if the fix changed function signatures or public API behavior | `/document` | Read `skills/document/SKILL.md`. Update affected docstrings to reflect the new behavior |

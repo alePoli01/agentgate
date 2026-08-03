@@ -27,3 +27,10 @@ The `.ai/ARCHITECTURE.md` file MUST include:
 
 ## Step 3: Handoff
 Once the architecture map is synced, explicitly inform the user that the map is updated and the project is ready for further implementation.
+
+## Workflow Hooks (Conditional Internal Skill Invocations)
+These hooks fire automatically at specific points during the mapping workflow when conditions are met.
+
+| Trigger Condition | Invoke | Action |
+|---|---|---|
+| Step 1 (Codebase Audit) — if the project contains >50 files or >5 top-level directories | `/researcher` | Spawn a read-only `/researcher` subagent via `/delegate` to scan file structures and module boundaries, then report findings back to preserve your main context |

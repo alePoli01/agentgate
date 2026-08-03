@@ -143,6 +143,13 @@ Before marking this task as COMPLETE on the whiteboard or anywhere else, you MUS
 At the end of execution, if you created new files, routes, components, or database tables, you MUST silently append these new relationships to `.ai/ARCHITECTURE.md`. 
 You do not need to re-read the whole codebase to do this; just incrementally log the new structural connections you built so the map remains accurate.
 
+## Workflow Hooks (Conditional Internal Skill Invocations)
+These hooks fire automatically at specific points during execution when conditions are met.
+
+| Trigger Condition | Invoke | Action |
+|---|---|---|
+| After Checkpoint Gate (Step 6) — if you created new public functions, APIs, or classes | `/document` | Read `skills/document/SKILL.md`. Generate inline docstrings and update README if applicable |
+| Step 3 (Blast Radius) — if you are **[TIER: SMALL]** and >3 files are in the blast radius | `/researcher` | Delegate blast-radius exploration to a read-only `/researcher` subagent via `/delegate` to preserve your main context |
 
 
 ---

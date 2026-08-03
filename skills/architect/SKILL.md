@@ -49,4 +49,11 @@ I recommend **Option [X]** because it best aligns with our Context Altitude.
 
 ## 4. Execution Handoff
 Execution is **BLOCKED** until the user explicitly selects an option. Once selected, output the final high-level blueprint and instruct the `orchestrator.py` to route to the **Coder Agent**.
+
+## Workflow Hooks (Conditional Internal Skill Invocations)
+These hooks fire automatically at specific points during the architect workflow when conditions are met.
+
+| Trigger Condition | Invoke | Action |
+|---|---|---|
+| Step 2 (LLM-as-a-Judge) — before generating 3 alternatives, if the problem domain requires external knowledge (new libraries, unfamiliar APIs, integration patterns) | `/researcher` | Spawn a read-only `/researcher` subagent via `/delegate` to explore existing codebase patterns and external documentation before generating options |
 </process>
