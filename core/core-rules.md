@@ -114,36 +114,45 @@ The bottom of `MEMORY.md` MUST contain a `🗄️ ARCHIVE INDEX` section. Every 
 > [!CAUTION]
 > **Passive Rules Fail. Active Workflows Succeed.** You must never write code on blind assumptions. You must route user requests into strict execution workflows.
 
-When a user provides a prompt, you must classify their intent and immediately route to the corresponding workflow script located in `.agents/skills/`:
+When a user provides a prompt, you must classify their intent and immediately route to the corresponding workflow script located in `.agents/skills/`.
 
-### Routing Logic
-- **`/refine`**: Tech Lead Router. Trigger to decompose a raw user prompt and preview the skills to be used before executing.
-- **`/new-project`**: Initialize a new project from scratch (e.g., if `.ai/SPEC.md` doesn't exist).
-- **`/plan`**: Planning & Architecture. Highly recommended for new features or architectural changes. The model must judge if a plan is necessary based on task complexity; minor bug fixes or trivial tweaks may skip directly to execution.
-- **`/execute`**: Feature/Implementation. Trigger when writing code.
-- **`/debug`**: Debugging/Errors. Trigger when the user provides an error, stack trace, or says "it doesn't work".
-- **`/map`**: Architectural Mapping. Trigger to get a codebase overview or update `.ai/ARCHITECTURE.md`.
-- **`/verify`**: Validation. Trigger to verify implementation against requirements.
-- **`/test`**: Testing. Trigger to generate or run test suites.
-- **`/discuss`**: Investigation. Trigger to explore a topic without modifying code.
-- **`/sweep`**: Codebase Cleanup. Trigger to hunt for dead code, TODOs, and architectural refuses.
-- **`/delegate`**: Subagents. Trigger to spawn and manage subagents for tasks.
-- **`/loop`**: Iteration. Trigger to run an automated iterative loop.
-- **`/pause`**: Context Hygiene. Trigger to dump state and pause session.
-- **`/resume`**: Context Hygiene. Trigger to resume from a paused session.
-- **`/architect`**: Generate and score 3 distinct architectural options.
-- **`/auditor`**: Compliance, review, and verification workflow.
-- **`/coder`**: Direct implementation of tasks without architectural design.
-- **`/document`**: Documentation generation and syncing workflow.
-- **`/execute-tool`**: Executes external tools using Decoupled Tool Calling.
-- **`/investigator`**: Debugging and root-cause analysis subagent.
-- **`/refactor`**: Behavioral-preserving safe refactoring backed by tests.
-- **`/researcher`**: Read-only codebase exploration and documentation subagent.
-- **`/review`**: Structured Code Review workflow.
-- **`/security`**: Security review specialist workflow.
-- **`/ui-designer`**: Platform-aware design system enforcement.
-- **`/upgrade`**: Automatically updates the current project's framework files.
-- **Questions/Exploration**: Handle directly. No heavy workflow needed.
+### User-Callable Commands
+These are the commands the user can explicitly invoke. You may suggest these to the user when appropriate.
+
+| Command | When to use |
+|---|---|
+| `/refine` | Decompose a raw, vague prompt. Acts as Tech Lead Router — clarifies scope, then routes to `/plan` |
+| `/plan` | Break a known feature/change into XML tasks and execute them. Recommended for anything touching >2 files |
+| `/debug` | User provides a crash, error, stack trace, or says "it doesn't work" |
+| `/architect` | User doesn't know HOW to build something. Generates and scores 3 distinct options |
+| `/map` | Generate or update `.ai/ARCHITECTURE.md` with Mermaid diagrams |
+| `/sweep` | Hunt for dead code, stale TODOs, and architectural refuse |
+| `/loop` | Run an automated iterative loop until a condition passes |
+| `/discuss` | Explore a topic without modifying code |
+| `/pause` | Dump state and pause session for context hygiene |
+| `/resume` | Resume from a paused session |
+| `/upgrade` | Update the framework files from the AgentGate repository |
+| `/new-project` | Initialize a new project from scratch (if `.ai/SPEC.md` doesn't exist) |
+
+### Internal Workflows (Auto-Invoked — NEVER suggest to user)
+These skills are called automatically by the user-callable commands above. Do NOT suggest these directly to the user. Do NOT route user prompts to these skills unless they are triggered by a parent workflow.
+
+| Skill | Called by | Purpose |
+|---|---|---|
+| `/execute` | `/plan`, `/refine` | Implements a single `<task>` XML block (write code, verify, checkpoint) |
+| `/refactor` | `/plan` (via `skill="refactor"`) | Behavioral-preserving restructuring backed by tests |
+| `/test` | `/execute` (Step 5) | Test generation and quality enforcement |
+| `/verify` | `/execute` (Evidence Gate) | Validation of implementation against requirements |
+| `/ui-designer` | Auto-Include Policies | Platform-aware design rules and UI Token Registry |
+| `/security` | Auto-Include Policies | Security review for auth, crypto, and input validation |
+| `/review` | Auto-Include Policies | Structured code review for public API changes |
+| `/execute-tool` | `/execute` (Small tier) | Decoupled Tool Calling for constrained models |
+| `/delegate` | `/plan`, `/sweep` | Subagent dispatching and μACP management |
+| `/coder` | `/architect`, `/delegate` | Constrained code-writing subagent (Syntax Executor) |
+| `/investigator` | `/delegate` | Autonomous hypothesis-generation subagent |
+| `/researcher` | `/delegate` | Read-only codebase exploration subagent |
+| `/document` | `/delegate` | Documentation generation and syncing |
+| `/auditor` | `/sweep`, `/delegate` | Spec compliance and code review subagent |
 
 **Rule:** Do not invent your own execution steps. Once routed, you must follow the steps defined in the respective `.agents/skills/` markdown file perfectly. Additionally, **before executing the workflow, you MUST explicitly state to the user which skill(s) or workflow(s) you have selected to process their request**, ensuring transparency.
 
