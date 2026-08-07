@@ -86,7 +86,32 @@ For any technology where the user does NOT provide explicit rules, you MUST defi
 > By generating this file, you are creating the permanent source of truth for how this technology should be written in this project. You will be strictly graded against these files during execution.
 
 ## Step 5: Adaptive Routing (XML Task Generation)
-You must break down the implementation into `<task>` XML blocks (defined in `task-schema.md`).
+You must break down the implementation into `<task>` XML blocks. You MUST use the exact schema defined below. Do not invent your own tags (like `<description>` or `<instructions>`).
+
+```xml
+<task type="auto|manual" effort="low|medium|high" skill="execute|debug|verify|refactor|test|review|security">
+  <name>Clear descriptive name</name>
+  <depends_on>T-xxx</depends_on> <!-- Optional -->
+  <priority>high|normal|low</priority> <!-- Optional -->
+  <files>exact/path/to/file.ts</files>
+  <action>
+    Specific implementation instructions.
+  </action>
+  <self-critique>
+    [Cloud-Only] Did I actually meet the requirements? Are there edge cases?
+  </self-critique>
+  <verify>executable command that proves completion</verify>
+  <evidence>curl output | test output | MANUAL_VERIFICATION_REQUIRED</evidence>
+  <checkpoint>
+    - Update .ai/DECISIONS.md if an architectural decision was made
+    - Update .ai/STATE.md Current Position to reflect this task is done
+    - Update .ai/MEMORY.md to clear this task from Active TODOs
+    - Run: git add -A && git commit -m "checkpoint: [task name]"
+    - If no decision was made, write: NO_DECISION — [one-line summary of what was done]
+  </checkpoint>
+  <done>measurable acceptance criteria</done>
+</task>
+```
 
 **Skill-Per-Task Routing Rule**: Each `<task>` block MUST include a `skill` attribute that specifies which AgentGate workflow should execute it. Do NOT default everything to `execute`. Analyze each task individually:
 - New features or code additions → `skill="execute"`
@@ -97,14 +122,24 @@ You must break down the implementation into `<task>` XML blocks (defined in `tas
 
 A single plan file CAN and SHOULD mix different skills. For example, a plan might contain 3 `execute` tasks and 2 `debug` tasks.
 
-**Formatting Rule**: You MUST pretty-print and indent all `<task>` XML blocks (including nested tags and content). **CRITICAL**: If you are writing these tasks into a `.md` file, you MUST wrap the entire XML block in a markdown code block (` ```xml ... ``` `) so the IDE's markdown renderer doesn't hide the tags and smash the text together.
+**Formatting Rule**: You MUST pretty-print and indent all `<task>` XML blocks (including nested tags and content). **CRITICAL**: If you are writing these tasks into a `.md` file, you MUST wrap the entire XML block in a markdown code block (```` ```xml ... ``` ````) so the IDE's markdown renderer doesn't hide the tags and smash the text together.
 
 **The Token Tax Mitigation Rule**:
 - **Low Effort Tasks (1-2 steps)**: Generate the `<task>` blocks inline within the main conversation and proceed to execute them directly.
 - **Medium/High Effort Tasks**: Do NOT generate massive XML blocks in the main conversation. You MUST delegate to a `planner` subagent. Instruct the subagent to reason through the steps and write the resulting XML `<task>` blocks to a plan file (e.g., `.ai/phases/N/1-PLAN.md`). Ensure the subagent wraps the XML in ` ```xml ``` ` blocks inside the file!
 
 ## Step 6: Handoff
-Once the plan is generated (either inline or via file) and all language-specific `.ai/rules/` files exist, explicitly inform the user that the planning phase is complete. Instruct them that each task will be executed using the skill specified in its `skill` attribute — the agent must read and follow the corresponding `skills/<skill>/SKILL.md` for each task.
+Once the plan is generated (either inline or via file) and all language-specific `.ai/rules/` files exist, print the following handoff message:
+
+```markdown
+> **AgentGate ► PLANNING COMPLETE**
+> ✓ Plan generated at `.ai/phases/X/Y-PLAN.md`
+> ✓ Coding standards verified in `.ai/rules/`
+> 
+> **NEXT STEP:** Run `/execute` to begin implementation.
+```
+
+Do NOT use box-drawing characters (━), ASCII art, or decorative borders. Use only the blockquote format shown above.
 
 ---
 

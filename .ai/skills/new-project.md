@@ -135,22 +135,19 @@ cp .ai/rules-templates/typescript-standards.md .ai/rules/typescript-standards.md
 
 ### Step 4 — Print Summary
 After all files are created, print:
-```
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
- AgentGate ► PROJECT INITIALIZED
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-Files created:
-  ✓ .ai/SPEC.md        ← Fill in requirements, then FINALIZE
-  ✓ .ai/MEMORY.md      ← Active TODOs and decisions
-  ✓ .ai/STATE.md       ← Session position tracker
-  ✓ .ai/DECISIONS.md   ← Persistent architectural log
-  ✓ .ai/ROADMAP.md     ← Phase tracking
-
-▶ NEXT STEP
-1. Open .ai/SPEC.md and complete all requirements
-2. Change Status from DRAFT to FINALIZED
-3. Run /plan 1 to create your first phase execution plan
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+```markdown
+> **AgentGate ► PROJECT INITIALIZED**
+> **Files created:**
+> ✓ .ai/SPEC.md        ← Fill in requirements, then FINALIZE
+> ✓ .ai/MEMORY.md      ← Active TODOs and decisions
+> ✓ .ai/STATE.md       ← Session position tracker
+> ✓ .ai/DECISIONS.md   ← Persistent architectural log
+> ✓ .ai/ROADMAP.md     ← Phase tracking
+> 
+> **NEXT STEPS:**
+> 1. Open .ai/SPEC.md and complete all requirements
+> 2. Change Status from DRAFT to FINALIZED
+> 3. Run `/architect` or `/plan 1` to begin
 ```
 
 ### Constraints

@@ -56,6 +56,16 @@ If you are modifying existing logic, functions, or components, you MUST assess t
 
 You must read the `<task>` XML block provided by the planner (or generate one yourself if simple). 
 
+## Step 2b: Effort-Based Behavior
+Check the `effort` attribute of the `<task>`. Your workflow adapts based on the effort level:
+
+| Effort | Blast Radius Check | Self-Critique | Architecture Sync |
+|---|---|---|---|
+| `low` | Skip (unless files touch >2 modules) | Skip | Skip |
+| `medium` | Required | Optional | Required if new files created |
+| `high` | Required + spawn `/researcher` subagent if >3 files in blast radius | Required | Always required |
+
+
 > [!IMPORTANT]
 > **Smart Dispatcher Rule**: Check the `skill` attribute of the `<task>`. If it is specified and is NOT `execute` (e.g., `skill="debug"`, `skill="refactor"`, `skill="verify"`), you MUST immediately STOP reading this file, load the corresponding `skills/<skill>/SKILL.md` file, and follow its workflow instead.
 
