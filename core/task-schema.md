@@ -36,6 +36,7 @@ priority: 0
   <checkpoint>
     - Update .ai/DECISIONS.md if an architectural decision was made (append entry with today's date and rationale)
     - Update .ai/STATE.md Current Position to reflect this task is done
+    - Update .ai/MEMORY.md to clear this task from Active TODOs
     - Run: git add -A && git commit -m "checkpoint: [task name]"
     - If no decision was made, write: NO_DECISION — [one-line summary of what was done]
   </checkpoint>
@@ -60,7 +61,8 @@ priority: 0
 - `<checkpoint>`: **MANDATORY for all tasks.** Lists the lifecycle maintenance steps the agent must complete before marking this task COMPLETE. Must include:
   1. A DECISIONS.md entry (or explicit NO_DECISION statement)
   2. A STATE.md update
-  3. A git commit
+  3. A MEMORY.md update
+  4. A git commit
   An agent MUST NOT mark a task COMPLETE if this block is absent, empty, or contains only placeholder text.
 - `<done>`: What constitutes a successful completion of this task.
 

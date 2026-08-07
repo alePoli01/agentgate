@@ -129,8 +129,9 @@ Before marking this task as COMPLETE on the whiteboard or anywhere else, you MUS
 2. **Execute each step in `<checkpoint>`**:
    a. If a decision was made: append an entry to `.ai/DECISIONS.md` with today's date and rationale.
    b. Update `.ai/STATE.md` Current Position to reflect this task's completion.
-   c. Run `git commit -am "checkpoint: [task name]"` and confirm it succeeds.
-   d. If no decision was made: write `NO_DECISION — [one-line summary]` in the checkpoint block.
+   c. Update `.ai/MEMORY.md` to check off or remove this task from Active TODOs, and log any decisions in Active Decisions.
+   d. Run `git commit -am "checkpoint: [task name]"` and confirm it succeeds.
+   e. If no decision was made: write `NO_DECISION — [one-line summary]` in the checkpoint block.
 
 3. **Only after all 3 steps are confirmed** may you mark the task COMPLETE.
 

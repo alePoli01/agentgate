@@ -83,15 +83,12 @@ Once the user gives an explicit selection signal:
 4. **STOP.** Do NOT write code. Do NOT create execution plans. Do NOT route to the Coder Agent.
 5. Print the following handoff message:
 
-```
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
- AgentGate ► ARCHITECTURE FINALIZED
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
- ✓ Architecture written to .ai/ARCHITECTURE.md
- ✓ Decision logged in .ai/DECISIONS.md
-
- ▶ NEXT STEP: Run /plan to create your execution plan.
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+```markdown
+> **AgentGate ► ARCHITECTURE FINALIZED**
+> ✓ Architecture written to .ai/ARCHITECTURE.md
+> ✓ Decision logged in .ai/DECISIONS.md
+> 
+> **NEXT STEP:** Run `/plan` to create your execution plan.
 ```
 
 > [!IMPORTANT]

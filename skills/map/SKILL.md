@@ -83,17 +83,14 @@ The `.ai/ARCHITECTURE.md` file MUST include (adding sections if missing):
 
 Once the architecture map is merged, print:
 
-```
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
- AgentGate ► ARCHITECTURE MAP UPDATED
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
- ✓ Backup saved to .ai/ARCHITECTURE.md.bak
- ✓ Changes merged into .ai/ARCHITECTURE.md
-
- New sections added: X
- Sections updated:   Y
- Sections preserved: Z
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+```markdown
+> **AgentGate ► ARCHITECTURE MAP UPDATED**
+> ✓ Backup saved to .ai/ARCHITECTURE.md.bak
+> ✓ Changes merged into .ai/ARCHITECTURE.md
+> 
+> New sections added: X
+> Sections updated:   Y
+> Sections preserved: Z
 ```
 
 ## Workflow Hooks (Conditional Internal Skill Invocations)
