@@ -54,21 +54,15 @@ A goal like "make it look better" cannot be verified — refuse it and ask for a
 
 If `[TIER: SMALL]`, print this before starting:
 
-```
-+----------------------------------------------------------+
-|  SMALL TIER LOOP MODE                                    |
-|                                                          |
-|  You are running /loop on a SMALL context model. The     |
-|  following guardrails are AUTOMATICALLY applied:         |
-|                                                          |
-|  - MAX_ITERATIONS restricted to 3                        |
-|  - Loop pauses if context exceeds 40%                    |
-|  - DARRMS focus check required before each iteration     |
-|  - Failed approach memory is mandatory                   |
-|                                                          |
-|  To use more iterations, switch to a larger model        |
-|  or run /loop again after /pause and a fresh session.    |
-+----------------------------------------------------------+
+```markdown
+> **AgentGate ► SMALL TIER LOOP MODE**
+> You are running `/loop` on a SMALL context model. The following guardrails are AUTOMATICALLY applied:
+> - MAX_ITERATIONS restricted to 3
+> - Loop pauses if context exceeds 40%
+> - DARRMS focus check required before each iteration
+> - Failed approach memory is mandatory
+>
+> To use more iterations, switch to a larger model or run `/loop` again after `/pause` and a fresh session.
 ```
 
 ---
@@ -173,16 +167,13 @@ python .ai/src/orchestrator.py --loop-check "<DONE WHEN command>"
 
 When `--loop-check` returns exit code 0, print:
 
-```
-=====================================================
- /loop GOAL ACHIEVED
-=====================================================
-Goal:        <goal text>
-Iterations:  <N> / <MAX>
-Verified by: <DONE WHEN command>
-
-Suggested next step: /verify <phase> to confirm full integration
-=====================================================
+```markdown
+> **AgentGate ► /loop GOAL ACHIEVED**
+> ✓ **Goal**: <goal text>
+> ✓ **Iterations**: <N> / <MAX>
+> ✓ **Verified by**: `<DONE WHEN command>`
+> 
+> **NEXT STEP:** `/verify <phase>` to confirm full integration
 ```
 
 Then delete `.ai/LOOP_STATE.md` to signal loop completion:
