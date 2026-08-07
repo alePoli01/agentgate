@@ -154,6 +154,18 @@ Before marking this task as COMPLETE on the whiteboard or anywhere else, you MUS
 At the end of execution, if you created new files, routes, components, or database tables, you MUST silently append these new relationships to `.ai/ARCHITECTURE.md`. 
 You do not need to re-read the whole codebase to do this; just incrementally log the new structural connections you built so the map remains accurate.
 
+## Step 8: Handoff
+Once execution and the Checkpoint Gate are fully complete, print the following handoff message:
+
+```markdown
+> **AgentGate ► EXECUTION COMPLETE**
+> ✓ Tests passed and verified
+> ✓ `.ai/STATE.md` and `.ai/MEMORY.md` updated
+> ✓ Incremental `.ai/ARCHITECTURE.md` sync complete
+>
+> **NEXT STEP:** Provide your next instruction or run `/plan` for the next phase.
+```
+
 ## Workflow Hooks (Conditional Internal Skill Invocations)
 These hooks fire automatically at specific points during execution when conditions are met.
 

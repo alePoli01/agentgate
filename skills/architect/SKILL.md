@@ -91,10 +91,6 @@ Once the user gives an explicit selection signal:
 > **NEXT STEP:** Run `/plan` to create your execution plan.
 ```
 
-> [!IMPORTANT]
-> The `/architect` workflow MUST NEVER auto-chain into `/plan`, `/execute`, or `/coder`.
-> The user decides when to move to the next phase. Architecture is a conversation, not a pipeline.
-
 ## Workflow Hooks (Conditional Internal Skill Invocations)
 These hooks fire automatically at specific points during the architect workflow when conditions are met.
 

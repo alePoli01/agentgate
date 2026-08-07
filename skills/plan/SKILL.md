@@ -139,8 +139,6 @@ Once the plan is generated (either inline or via file) and all language-specific
 > **NEXT STEP:** Run `/execute` to begin implementation.
 ```
 
-Do NOT use box-drawing characters (━), ASCII art, or decorative borders. Use only the blockquote format shown above.
-
 ---
 
 ## Step 7: Plan Checker Logic (Self-Validation)
@@ -187,6 +185,4 @@ These two concepts are distinct and must not be confused:
 - A Wave 2 plan MUST NOT start until all Wave 1 plans have been executed AND verified.
 
 **Sequential Execution Mandate:**
-Even within the same wave, plans are executed strictly one at a time.
-Parallel execution is FORBIDDEN for any task that writes files or modifies code.
-The only exception: read-only research tasks (e.g., two subagents researching different topics simultaneously with no shared write target).
+File-writing tasks execute strictly one at a time. Parallel writes cause state corruption and break the 3-Strike Rule's traceability. The only exception is read-only research tasks (e.g., two subagents researching different topics with no shared write target).
