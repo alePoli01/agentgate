@@ -38,7 +38,7 @@ class TestInstaller(unittest.TestCase):
         output = result.stdout + result.stderr
         self.assertIn("Error:", output)
 
-    def test_install_upgrade_preserves_registry(self):
+    def test_install_update_preserves_registry(self):
         # 1. Fresh install
         self.run_install(self.tmpdir.name)
         
@@ -47,18 +47,18 @@ class TestInstaller(unittest.TestCase):
         with open(reg_path, "w") as f:
             json.dump({"valid_agents": ["CUSTOM"]}, f)
             
-        # 3. Upgrade
-        result = self.run_install(self.tmpdir.name, "--upgrade")
+        # 3. Update
+        result = self.run_install(self.tmpdir.name, "--update")
         self.assertEqual(result.returncode, 0)
-        self.assertIn("Upgrade complete", result.stdout)
+        self.assertIn("Update complete", result.stdout)
         
         # 4. Verify registry was not overwritten
         with open(reg_path, "r") as f:
             data = json.load(f)
             self.assertEqual(data["valid_agents"], ["CUSTOM"])
 
-    def test_install_upgrade_nonexistent(self):
-        result = self.run_install(self.tmpdir.name, "--upgrade")
+    def test_install_update_nonexistent(self):
+        result = self.run_install(self.tmpdir.name, "--update")
         self.assertEqual(result.returncode, 1)
         self.assertIn("Not installed", result.stdout)
 

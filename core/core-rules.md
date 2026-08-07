@@ -131,7 +131,7 @@ These are the commands the user can explicitly invoke. You may suggest these to 
 | `/discuss` | Explore a topic without modifying code |
 | `/pause` | Dump state and pause session for context hygiene |
 | `/resume` | Resume from a paused session |
-| `/upgrade` | Update the framework files from the AgentGate repository |
+| `/update` | Update the framework files from the AgentGate repository |
 | `/new-project` | Initialize a new project from scratch (if `.ai/SPEC.md` doesn't exist) |
 
 ### Internal Workflows (Auto-Invoked — NEVER suggest to user)

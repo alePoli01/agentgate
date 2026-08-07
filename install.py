@@ -9,7 +9,7 @@ import subprocess
 def install():
     parser = argparse.ArgumentParser(description="AgentGate Installer")
     parser.add_argument("target_dir", type=str, help="Target directory for installation")
-    parser.add_argument("--upgrade", action="store_true", help="Upgrade existing installation")
+    parser.add_argument("--update", action="store_true", help="Update existing installation")
     parser.add_argument("--uninstall", action="store_true", help="Uninstall AgentGate")
     parser.add_argument("--yes", action="store_true", help="Confirm uninstall without prompting")
     args = parser.parse_args()
@@ -64,9 +64,9 @@ def install():
             print(f"Error during uninstall: {e}")
             sys.exit(1)
 
-    if args.upgrade:
+    if args.update:
         if not os.path.exists(ai_dir):
-            print("Not installed. Run without --upgrade to install fresh.")
+            print("Not installed. Run without --update to install fresh.")
             sys.exit(1)
             
         current_version = "unknown"
@@ -225,7 +225,7 @@ Do not deviate from the AgentGate protocol. All your skills are located natively
             with open(hook_path, "w", encoding="utf-8") as f:
                 f.write(hook_content)
             print(f"Created {hook_file} hook.")
-        elif args.upgrade:
+        elif args.update:
             # Safely patch existing hooks to fix the path
             with open(hook_path, "r", encoding="utf-8") as f:
                 content = f.read()
@@ -236,8 +236,8 @@ Do not deviate from the AgentGate protocol. All your skills are located natively
                     f.write(content)
                 print(f"Updated {hook_file} hook with new root path.")
             
-    if args.upgrade:
-        print(f"Upgrade complete. {files_updated} files updated. User config preserved.")
+    if args.update:
+        print(f"Update complete. {files_updated} files updated. User config preserved.")
     else:
         print("\n[SUCCESS] AgentGate installed successfully!")
         
