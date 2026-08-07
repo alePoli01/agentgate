@@ -3,6 +3,8 @@ import os
 import shutil
 import json
 import argparse
+import tempfile
+import subprocess
 
 def install():
     parser = argparse.ArgumentParser(description="AgentGate Installer")
@@ -15,6 +17,29 @@ def install():
     target_dir = args.target_dir
     base_dir = os.path.dirname(os.path.abspath(__file__))
     ai_dir = os.path.join(target_dir, ".ai")
+
+    is_remote = False
+    temp_dir = None
+    source_base_dir = base_dir
+
+    if not os.path.exists(os.path.join(base_dir, "src")) or not os.path.exists(os.path.join(base_dir, "core")):
+        print("Local source files not found. Initiating remote fetch from GitHub via git...")
+        is_remote = True
+        temp_dir = tempfile.mkdtemp()
+        repo_url = "https://github.com/alePoli01/agentgate.git"
+        
+        try:
+            print("Cloning AgentGate from GitHub...")
+            subprocess.run(["git", "clone", "--depth", "1", repo_url, temp_dir], check=True, capture_output=True)
+            source_base_dir = temp_dir
+        except subprocess.CalledProcessError as e:
+            print(f"Error fetching remote repository: {e.stderr.decode('utf-8')}")
+            shutil.rmtree(temp_dir, ignore_errors=True)
+            sys.exit(1)
+        except Exception as e:
+            print(f"Error: {e}")
+            shutil.rmtree(temp_dir, ignore_errors=True)
+            sys.exit(1)
 
     if args.uninstall:
         if not os.path.exists(ai_dir):
@@ -54,7 +79,7 @@ def install():
                 pass
                 
         new_version = "unknown"
-        nv_file = os.path.join(base_dir, "VERSION.md")
+        nv_file = os.path.join(source_base_dir, "VERSION.md")
         if os.path.exists(nv_file):
             try:
                 with open(nv_file, "r", encoding="utf-8") as f:
@@ -81,7 +106,7 @@ def install():
     dirs_to_copy_ai = ["src", "core", "rules-templates"]
     files_updated = 0
     for d in dirs_to_copy_ai:
-        source_dir = os.path.join(base_dir, d)
+        source_dir = os.path.join(source_base_dir, d)
         target_dir_path = os.path.join(ai_dir, d)
         if os.path.exists(source_dir):
             try:
@@ -93,7 +118,7 @@ def install():
                 
     # 1.1. Copy skills/ to .agents/skills/
     agents_skills_dir = os.path.join(target_dir, ".agents", "skills")
-    source_skills_dir = os.path.join(base_dir, "skills")
+    source_skills_dir = os.path.join(source_base_dir, "skills")
     if os.path.exists(source_skills_dir):
         try:
             shutil.copytree(source_skills_dir, agents_skills_dir, dirs_exist_ok=True)
@@ -116,7 +141,7 @@ def install():
     # 2. Copy root files (FRAMEWORK_BOOTSTRAP.md, VERSION.md)
     files_to_copy = ["FRAMEWORK_BOOTSTRAP.md", "VERSION.md"]
     for f_name in files_to_copy:
-        source_file = os.path.join(base_dir, f_name)
+        source_file = os.path.join(source_base_dir, f_name)
         target_file = os.path.join(target_dir, f_name)
         if os.path.exists(source_file):
             try:
@@ -215,6 +240,9 @@ Do not deviate from the AgentGate protocol. All your skills are located natively
         print(f"Upgrade complete. {files_updated} files updated. User config preserved.")
     else:
         print("\n[SUCCESS] AgentGate installed successfully!")
+        
+    if is_remote and temp_dir:
+        shutil.rmtree(temp_dir, ignore_errors=True)
 
 if __name__ == "__main__":
     install()
