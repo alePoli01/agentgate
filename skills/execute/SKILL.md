@@ -128,6 +128,20 @@ You must prove your implementation works to pass the Evidence Gate. You MUST loa
 2. **Execute `<verify>`**: Use the Terminal to run the project's test suite, compile the code, or execute the curl command specified in the `<verify>` node.
 3. **Capture `<evidence>`**: Paste the literal `stdout` or `stderr` from the terminal directly into the `<evidence>` node. Do not say "it should work"—prove it. If the task is visual/untestable, output `MANUAL_VERIFICATION_REQUIRED`.
 
+> [!CAUTION]
+> **Step 5.4 — Production Build Gate (compiled projects only):**
+> If the project uses a compiled language or framework (Next.js, TypeScript, Android/Kotlin, iOS/Swift, Java, Go, Rust, etc.), the `<verify>` command MUST use the **production build**, not the development server.
+>
+> | Stack | Required verify command | NOT acceptable |
+> |---|---|---|
+> | Next.js / TypeScript | `npm run build` | `npm run dev` (skips type-checking) |
+> | Android | `./gradlew assembleRelease` | Running on emulator only |
+> | iOS/Swift | `xcodebuild -scheme X build` | Running in simulator only |
+> | Python | `python -m py_compile` + tests | Running the script manually |
+>
+> The development server (`npm run dev`, `gradle run`, etc.) does not perform full type checking or dead-code analysis. A task that only passes the dev server has **NOT passed the Evidence Gate** for compiled projects.
+
+
 ## Step 6: Checkpoint Gate (MANDATORY before marking COMPLETE)
 
 Before marking this task as COMPLETE on the whiteboard or anywhere else, you MUST:
