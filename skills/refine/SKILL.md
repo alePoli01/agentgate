@@ -35,22 +35,28 @@ Using the task schema from `core/task-schema.md`, produce a full `<task>` XML bl
 > **Never drop or merge user requirements.** You may rephrase a requirement to make it technically precise — but every bullet point the user wrote must produce at least one `<task>`. Merging two requirements into one vague task or omitting a requirement entirely is what causes silent regressions.
 
 ## Step 4: The Plan Review Gate (MANDATORY)
-Before executing anything, present the full XML plan to the user for review:
+Write the full XML plan to `.ai/refine/REFINE-PLAN.md`. Wrap the XML blocks in ` ```xml ``` ` code fences inside the markdown file.
+
+Then present it to the user for review:
 
 ```markdown
 > **Tech Lead Plan — [N] tasks**
-> Review the plan below. Each task shows exactly which files will be changed and how.
+> Plan written to `.ai/refine/REFINE-PLAN.md`
+> Review the tasks below. Each one shows exactly which files will be changed and how.
 > Reply "yes" or "proceed" to execute, or tell me what to adjust.
 ```
 
-Then render the XML task blocks in full so the user can read the specific actions and files. The user must be able to confirm that nothing was dropped and the approach is correct.
+Render the XML task blocks in the chat as well so the user can review inline. The user must be able to confirm that nothing was dropped and the approach is correct.
 
 ## Step 5: Execution (on user approval)
 Once the user approves:
 1. Log the tasks into `.ai/MEMORY.md`.
-2. Read `skills/execute/SKILL.md` (or the relevant skill file for each task's `skill` attribute).
-3. Execute each task sequentially, following every step, gate, and checkpoint defined in the skill file.
-4. After each task completes, announce completion and which task is next.
+2. For each task in `.ai/refine/REFINE-PLAN.md`:
+   a. Read the corresponding skill file (e.g., `skills/execute/SKILL.md` for `skill="execute"`).
+   b. Execute the task following every step, gate, and checkpoint defined in that skill.
+   c. After completion, announce which task was completed and which is next.
+3. After all tasks are done, delete `.ai/refine/REFINE-PLAN.md` to signal completion.
 
 > [!CAUTION]
 > Approval of the plan is NOT permission to skip execution gates. Every Evidence Gate, Checkpoint Gate, and verification step inside the child skill MUST be honored during execution.
+
