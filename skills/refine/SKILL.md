@@ -1,57 +1,56 @@
 ---
 name: "refine"
-description: "The Autonomous Tech Lead Router. Analyzes a raw user prompt, decomposes it into atomic tasks, and explicitly previews the necessary skills before executing them."
+description: "The Autonomous Tech Lead. Analyzes a raw user prompt, researches the codebase, generates a full XML execution plan with specific files and actions, and presents it for user approval before executing."
 environment_target: "universal"
 priority: 1
 ---
-# The Refine Router Protocol
+# The Refine Protocol
 
 **Trigger**: The user explicitly typed `/refine <their request>` or requested you to act as the Tech Lead to decompose a complex task.
 
-> [!NOTE]  
-> You are acting as the Autonomous Tech Lead. Your goal is to intercept a raw, complex prompt and translate it into strict AgentGate workflow steps.
+> [!NOTE]
+> You are acting as the Autonomous Tech Lead. Your job is NOT just to label which skill runs — it is to actually do the planning work upfront: research the codebase, identify the specific files, define the exact actions, and produce a complete XML plan. The user approves a plan with real details, not a list of vague labels.
 
 ## Step 1: Intent Analysis
-Read the user's raw prompt. Determine exactly what they are trying to achieve (e.g., building a feature, debugging an error, refactoring architecture).
+Read the user's raw prompt carefully. Identify every distinct requirement. Every bullet point the user wrote is a separate requirement — do not merge or drop any of them.
 
-## Step 2: Atomic Decomposition
-Break the prompt down into atomic, sequential tasks based on the AgentGate skills available to you.
+## Step 2: Codebase Research (MANDATORY before planning)
+Before generating any tasks, you MUST explore the codebase to ground the plan in reality:
+- Identify the exact files affected by each requirement.
+- Understand the current implementation well enough to define a specific action (not "update the component" but "in `src/components/X.tsx`, change `Y` to `Z`").
+- For UI requirements, locate the relevant component and its current styling.
+- For data requirements, locate the scraper, API, or data model.
+
+This research phase is what separates a useful plan from a vague one.
+
+## Step 3: Generate the XML Plan
+Using the task schema from `core/task-schema.md`, produce a full `<task>` XML block for each requirement (or logical group of closely related requirements). Each task MUST include:
+- `effort` and `skill` attributes
+- `<files>`: the exact file paths to modify
+- `<action>`: specific, step-by-step instructions (not "fix the alignment" but "add `text-align: left` to the `.away-team` class in `FormationsPage.css`")
+- `<verify>`: an executable command that proves the change works
+- `<checkpoint>`: the standard checkpoint block
 
 > [!IMPORTANT]
-> **Never drop or merge user requirements.** You may rephrase a bullet point to make it clearer or more precise for the executing agent — but every single bullet point the user provided must survive into the execution plan. Merging two bullets into one vague sentence or omitting a bullet entirely is what causes silent regressions.
+> **Never drop or merge user requirements.** You may rephrase a requirement to make it technically precise — but every bullet point the user wrote must produce at least one `<task>`. Merging two requirements into one vague task or omitting a requirement entirely is what causes silent regressions.
 
-Group tasks by the skill they require. For each group, list every requirement that belongs to it — reworded for clarity if needed, but with the original intent fully intact.
+## Step 4: The Plan Review Gate (MANDATORY)
+Before executing anything, present the full XML plan to the user for review:
 
-## Step 3: The Preview Gate (MANDATORY)
-Before executing *any* of the tasks or modifying any files, you MUST pause and present a structured preview to the user.
-Format your response exactly like this:
+```markdown
+> **Tech Lead Plan — [N] tasks**
+> Review the plan below. Each task shows exactly which files will be changed and how.
+> Reply "yes" or "proceed" to execute, or tell me what to adjust.
+```
 
-> **Tech Lead Preview**
-> I have analyzed your prompt and decomposed it into the following execution plan:
->
-> **Step 1 — [/skill_name]**
-> Requirements to implement:
-> - [requirement from user — rephrased for agent clarity if needed]
-> - [requirement from user — rephrased for agent clarity if needed]
->
-> **Step 2 — [/skill_name]**
-> Requirements to implement:
-> - [requirement from user — rephrased for agent clarity if needed]
->
-> *Shall I proceed with step 1?*
+Then render the XML task blocks in full so the user can read the specific actions and files. The user must be able to confirm that nothing was dropped and the approach is correct.
 
-The user must be able to read this preview and confirm that **nothing was dropped** from their original request. Every bullet point they wrote must appear here. Rephrasing is allowed; omission is not.
-
-## Step 4: Execution & Handoff (STRICT ADHERENCE)
-Once the user approves the preview:
-1. Log the tasks into the working memory (`.ai/MEMORY.md`).
-2. For **each** skill in your decomposed list, you MUST:
-   a. **Read** the corresponding `SKILL.md` file (e.g., `skills/execute/SKILL.md`, `skills/verify/SKILL.md`).
-   b. **Pass the exact, verbatim requirements** from the Preview into the child skill's `<action>` block. Never rewrite or shorten them.
-   c. **Follow every numbered step** defined in that file. You are not permitted to improvise, skip steps, or execute the "spirit" of the skill without following the actual protocol.
-   d. **Complete all gates** (e.g., Checkpoint Gate, Evidence Gate) before moving to the next skill in the list.
-3. After completing a skill, announce to the user which skill was just completed and which skill is next.
+## Step 5: Execution (on user approval)
+Once the user approves:
+1. Log the tasks into `.ai/MEMORY.md`.
+2. Read `skills/execute/SKILL.md` (or the relevant skill file for each task's `skill` attribute).
+3. Execute each task sequentially, following every step, gate, and checkpoint defined in the skill file.
+4. After each task completes, announce completion and which task is next.
 
 > [!CAUTION]
-> `/refine` is a **router**, not a shortcut. It decomposes work into skills, but it does NOT grant permission to skip the steps inside those skills. Every gate, every checkpoint, every verification step inside the child skill MUST be honored.
-
+> Approval of the plan is NOT permission to skip execution gates. Every Evidence Gate, Checkpoint Gate, and verification step inside the child skill MUST be honored during execution.
