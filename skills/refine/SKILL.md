@@ -18,9 +18,9 @@ Read the user's raw prompt. Determine exactly what they are trying to achieve (e
 Break the prompt down into atomic, sequential tasks based on the AgentGate skills available to you.
 
 > [!IMPORTANT]
-> **Preserve the user's requirements verbatim.** Do NOT paraphrase, summarize, or condense what the user asked. Each atomic task must carry the user's exact words as its acceptance criteria. Summarizing loses detail and causes silent regressions.
+> **Never drop or merge user requirements.** You may rephrase a bullet point to make it clearer or more precise for the executing agent — but every single bullet point the user provided must survive into the execution plan. Merging two bullets into one vague sentence or omitting a bullet entirely is what causes silent regressions.
 
-Group tasks by the skill they require, but keep every bullet point the user provided attached to the task that will implement it. If multiple bullet points belong to the same `/execute` call, list ALL of them — do not merge them into a single vague sentence.
+Group tasks by the skill they require. For each group, list every requirement that belongs to it — reworded for clarity if needed, but with the original intent fully intact.
 
 ## Step 3: The Preview Gate (MANDATORY)
 Before executing *any* of the tasks or modifying any files, you MUST pause and present a structured preview to the user.
@@ -31,16 +31,16 @@ Format your response exactly like this:
 >
 > **Step 1 — [/skill_name]**
 > Requirements to implement:
-> - [exact bullet point from user, word for word]
-> - [exact bullet point from user, word for word]
+> - [requirement from user — rephrased for agent clarity if needed]
+> - [requirement from user — rephrased for agent clarity if needed]
 >
 > **Step 2 — [/skill_name]**
 > Requirements to implement:
-> - [exact bullet point from user, word for word]
+> - [requirement from user — rephrased for agent clarity if needed]
 >
 > *Shall I proceed with step 1?*
 
-The user must be able to read this preview and confirm that **nothing was lost or misinterpreted** from their original request. If a bullet point is missing from the preview, it will never be implemented.
+The user must be able to read this preview and confirm that **nothing was dropped** from their original request. Every bullet point they wrote must appear here. Rephrasing is allowed; omission is not.
 
 ## Step 4: Execution & Handoff (STRICT ADHERENCE)
 Once the user approves the preview:
