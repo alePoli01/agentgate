@@ -121,8 +121,8 @@ These are the commands the user can explicitly invoke. You may suggest these to 
 
 | Command | When to use |
 |---|---|
-| `/refine` | Decompose a raw, vague prompt. Acts as Tech Lead Router — clarifies scope, then routes to `/plan` |
-| `/plan` | Break a known feature/change into XML tasks and execute them. Recommended for anything touching >2 files |
+| `/refine` | Decompose a raw, vague prompt. Acts as Tech Lead — researches codebase and creates a Markdown execution plan |
+| `/plan` | Break a known feature/change into Structured Markdown Tasks, review with user, and prepare for execution |
 | `/debug` | User provides a crash, error, stack trace, or says "it doesn't work" |
 | `/architect` | User doesn't know HOW to build something. Generates and scores 3 distinct options |
 | `/map` | Generate or update `.ai/ARCHITECTURE.md` with Mermaid diagrams |
@@ -139,8 +139,8 @@ These skills are called automatically by the user-callable commands above. Do NO
 
 | Skill | Called by | Purpose |
 |---|---|---|
-| `/execute` | `/plan`, `/refine` | Implements a single `<task>` XML block (write code, verify, checkpoint) |
-| `/refactor` | `/plan` (via `skill="refactor"`) | Behavioral-preserving restructuring backed by tests |
+| `/execute` | `/plan`, `/refine` | Implements a single Structured Markdown Task block (write code, verify, checkpoint) |
+| `/refactor` | `/plan` (via `Skill: /refactor`) | Behavioral-preserving restructuring backed by tests |
 | `/test` | `/execute` (Step 5) | Test generation and quality enforcement |
 | `/verify` | `/execute` (Evidence Gate) | Validation of implementation against requirements |
 | `/ui-designer` | Auto-Include Policies | Platform-aware design rules and UI Token Registry |
@@ -216,6 +216,6 @@ If your host environment (e.g., Antigravity, Cursor, Windsurf) automatically inj
 The AgentGate framework completely supersedes the host IDE's native workflow.
 - **NEVER** create or edit a native `task.md` or `implementation_plan.md`.
 - **ALWAYS** use AgentGate's `.ai/STATE.md` to track task progression.
-- **ALWAYS** use AgentGate's XML `<task>` schema within `.ai/phases/X/Y-PLAN.md` files for planning.
+- **ALWAYS** use AgentGate's Structured Markdown Task schema within `.ai/phases/X/Y-PLAN.md` files for planning.
 
 If you ever find yourself editing a file named `task.md` or `implementation_plan.md` (especially in an `.appDataDir` or `.brain` folder), you have violated the AgentGate framework. Stop immediately and revert to `.ai/STATE.md`.

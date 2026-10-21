@@ -18,9 +18,9 @@ priority: 1
 > Check your orchestrator tier banner (`[TIER: X]`). If you are **[TIER: SMALL]**, refer to the "Condensed Execution Checklist" at the bottom of this file to save context while executing.
 
 ## Auto-Include Policies (MANDATORY Pre-Flight)
-Before executing, inspect the `<files>` listed in the task. If ANY file matches a condition below, you MUST load and apply the corresponding skill. This is NOT optional.
+Before executing, inspect the `**Files:**` listed in the task. If ANY file matches a condition below, you MUST load and apply the corresponding skill. This is NOT optional.
 
-| Condition on `<files>` | Auto-Include Skill |
+| Condition on `**Files:**` | Auto-Include Skill |
 |---|---|
 | File is a view, screen, layout, component, or stylesheet (e.g., `*Screen.kt`, `*View.kt`, `*.jsx`, `*.tsx`, `*.html`, `*.css`, `*.xml` layout) | Read `skills/ui-designer/SKILL.md` and apply its platform-specific rules to all UI code written |
 | File touches authentication, crypto, API keys, tokens, passwords, or user input validation | Read `skills/security/SKILL.md` and apply its rules before writing any logic |
@@ -55,10 +55,10 @@ If you are modifying existing logic, functions, or components, you MUST assess t
 3. **Atomic Updates**: Update all dependent files simultaneously alongside your primary change to prevent breaking the build.
 
 
-You must read the `<task>` XML block provided by the planner (or generate one yourself if simple). 
+You must read the Structured Markdown Task block provided by the planner (or generate one yourself using `core/task-schema.md` if simple).
 
 ## Step 2b: Effort-Based Behavior
-Check the `effort` attribute of the `<task>`. Your workflow adapts based on the effort level:
+Check the `Effort` column in the task's metadata table. Your workflow adapts based on the effort level:
 
 | Effort | Blast Radius Check | Self-Critique (3-Point Audit) | Architecture Sync |
 |---|---|---|---|
@@ -68,7 +68,7 @@ Check the `effort` attribute of the `<task>`. Your workflow adapts based on the 
 
 
 > [!IMPORTANT]
-> **Smart Dispatcher Rule**: Check the `skill` attribute of the `<task>`. If it is specified and is NOT `execute` (e.g., `skill="debug"`, `skill="refactor"`, `skill="verify"`), you MUST immediately STOP reading this file, load the corresponding `skills/<skill>/SKILL.md` file, and follow its workflow instead.
+> **Smart Dispatcher Rule**: Check the `Skill` column in the task's metadata table. If it is specified and is NOT `/execute` (e.g., `/debug`, `/refactor`, `/verify`), you MUST immediately STOP reading this file, load the corresponding `skills/<skill>/SKILL.md` file, and follow its workflow instead.
 
 When executing tasks, distinguish between tool types:
 - **Platform-native tools**: (e.g., `view_file`, `read_file` provided by your host IDE) can be used directly without the orchestrator.
@@ -93,7 +93,7 @@ When executing tasks, distinguish between tool types:
 > lines is NOT a new approach. A new approach means a different algorithm, a different
 > data structure, or a different control flow path.
 
-Before writing code, strictly read the `<action>` instructions. Follow this strict tool hierarchy:
+Before writing code, strictly read the `### Action` instructions. Follow this strict tool hierarchy:
 1. **Terminal (Priority 1)**: The ultimate problem-solving tool. Run tests, linters, and sandboxed builds to ensure your code works.
    - *Library Freshness Protocol*: Before running `npm install`, `pip install`, or adding a new dependency, you MUST use the CLI (e.g., `npm view <pkg> version` or `pip index versions <pkg>`) to verify the latest production version and ensure compatibility.
 2. **Fast Search (Priority 2)**: Use grep-like tools to quickly locate variables and functions instead of reading entire files blindly.
@@ -120,21 +120,21 @@ You must prove your implementation works to pass the Evidence Gate. You MUST loa
 > Three outcomes:
 > - **Suite passes** → proceed to step 1 below.
 > - **Suite was already failing before your change** → document the pre-existing failure
->   explicitly in `<evidence>` ("pre-existing: test X was already failing"), then proceed.
+>   explicitly in `### Evidence` ("pre-existing: test X was already failing"), then proceed.
 > - **Suite now fails due to your changes** → you introduced a regression.
 >   You MUST fix it before the Checkpoint Gate. **Do NOT commit broken code.**
->   This is a blocking failure — treat it the same as a failing `<verify>` command.
+>   This is a blocking failure — treat it the same as a failing `Verify Command`.
 
-1. **Self-Critique (3-Point Implementation Audit)**: For `medium` and `high` effort tasks, you MUST inspect the actual code you just wrote and output a `<self-critique>` XML node answering these three checks before running `<verify>`:
+1. **Self-Critique (3-Point Implementation Audit)**: For `medium` and `high` effort tasks, you MUST inspect the actual code you just wrote and output a `### Self-Critique (3-Point Audit)` Markdown section answering these three checks before running `Verify Command`:
    - **Check 1 — Docstring/Comment vs. Code (Anti-Stubbing)**: Read every comment and docstring in the files you edited. Is every branch, condition, or schedule described in your comments actually implemented in the code below it? (Writing a comment describing a 6h/90s condition and then calling a 1-line function unconditionally is a critical failure).
-   - **Check 2 — Constants & Cache Integrity**: Compare your code against `.ai/DECISIONS.md` and `<action>`. Did you preserve the user's exact intervals and caching strategy? Confirm you did NOT leave `force=True` or cache-bypass flags hardcoded in background jobs or production paths.
+   - **Check 2 — Constants & Cache Integrity**: Compare your code against `.ai/DECISIONS.md` and `### Action`. Did you preserve the user's exact intervals and caching strategy? Confirm you did NOT leave `force=True` or cache-bypass flags hardcoded in background jobs or production paths.
    - **Check 3 — External API & Scheduler Safety**: If your code schedules a background task, loop, or external API/scraper call, verify that off-hours guards, TTL caching, and rate limits are active in code and explicitly asserted in the test suite.
-2. **Execute `<verify>`**: Use the Terminal to run the project's test suite, compile the code, or execute the curl command specified in the `<verify>` node.
-3. **Capture `<evidence>`**: Paste the literal `stdout` or `stderr` from the terminal directly into the `<evidence>` node. Do not say "it should work"—prove it. If the task is visual/untestable, output `MANUAL_VERIFICATION_REQUIRED`.
+2. **Execute `Verify Command`**: Use the Terminal to run the project's test suite, compile the code, or execute the command specified in `### Verification`.
+3. **Capture `### Evidence`**: Paste the literal `stdout` or `stderr` from the terminal directly into a `### Evidence` code block. Do not say "it should work"—prove it. If the task is visual/untestable, output `MANUAL_VERIFICATION_REQUIRED`.
 
 > [!CAUTION]
 > **Step 5.4 — Production Build Gate (compiled projects only):**
-> If the project uses a compiled language or framework (Next.js, TypeScript, Android/Kotlin, iOS/Swift, Java, Go, Rust, etc.), the `<verify>` command MUST use the **production build**, not the development server.
+> If the project uses a compiled language or framework (Next.js, TypeScript, Android/Kotlin, iOS/Swift, Java, Go, Rust, etc.), the `Verify Command` MUST use the **production build**, not the development server.
 >
 > | Stack | Required verify command | NOT acceptable |
 > |---|---|---|
@@ -150,18 +150,18 @@ You must prove your implementation works to pass the Evidence Gate. You MUST loa
 
 Before marking this task as COMPLETE on the whiteboard or anywhere else, you MUST:
 
-1. **Verify `<checkpoint>` exists and is non-empty** in the task definition.
-   - If `<checkpoint>` is absent or contains only placeholder text → STOP. Do NOT mark complete.
-   - Instruct the user: "This task has no `<checkpoint>` block. Add one to the task XML before I can mark it complete."
+1. **Verify `### Checkpoint` exists and is non-empty** in the task definition.
+   - If `### Checkpoint` is absent or contains only placeholder text → STOP. Do NOT mark complete.
+   - Instruct the user: "This task has no `### Checkpoint` section. Add one to the task before I can mark it complete."
 
-2. **Execute each step in `<checkpoint>`**:
+2. **Execute each step in `### Checkpoint`**:
    a. If a decision was made: append an entry to `.ai/DECISIONS.md` with today's date and rationale.
    b. Update `.ai/STATE.md` Current Position to reflect this task's completion.
    c. Update `.ai/MEMORY.md` to check off or remove this task from Active TODOs, and log any decisions in Active Decisions.
    d. Run `git commit -am "checkpoint: [task name]"` and confirm it succeeds.
-   e. If no decision was made: write `NO_DECISION — [one-line summary]` in the checkpoint block.
+   e. If no decision was made: write `NO_DECISION — [one-line summary]` in the checkpoint report.
 
-3. **Only after all 3 steps are confirmed** may you mark the task COMPLETE.
+3. **Only after all steps are confirmed** may you mark the task COMPLETE.
 
 > [!CAUTION]
 > A task that passes the Evidence Gate but skips the Checkpoint Gate is NOT complete.
@@ -202,6 +202,6 @@ If your tier banner reads `[TIER: SMALL]`, follow this stripped-down checklist t
 2. **Blast Radius**: Check `.ai/ARCHITECTURE.md` before changing logic.
 3. **Execution**: Write code.
    - *Zero-Trust Protocol*: If a tool fails, don't hide it. If a tool fuzzymatches, use `view_file` to verify. If you delete/rename a file/API, `grep` for the old name to clean up orphans.
-4. **Verification**: Run existing tests first (Regression Gate). Verify docstrings match actual code and no `force=True` or unrequested timers exist. Write new tests (see `test.md`). `<verify>` must prove the code works. `<evidence>` gets the raw output.
+4. **Verification**: Run existing tests first (Regression Gate). Verify docstrings match actual code and no `force=True` or unrequested timers exist. Write new tests (see `test.md`). `Verify Command` must prove the code works. `### Evidence` gets the raw output.
 5. **Checkpoint**: Update `STATE.md`, `DECISIONS.md`, and run `git add -A && git commit -m`.
 6. **Sync**: Incrementally update `ARCHITECTURE.md` if you added files.

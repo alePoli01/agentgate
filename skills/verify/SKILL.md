@@ -17,7 +17,7 @@ Read `.ai/SPEC.md`, `.ai/ROADMAP.md` (to identify the phase's must-haves), and t
 From the phase definition and plan, identify **must-haves** — requirements that MUST be true for the phase to be complete.
 
 ## Step 3: Direct Codebase Verification
-For every task that is marked as "done", you MUST independently verify it. Do NOT blindly trust the `<evidence>` block from execution. 
+For every task that is marked as "done", you MUST independently verify it. Do NOT blindly trust the `### Evidence` block from execution. 
 
 1. **Terminal Verification**: Run the verification command yourself (e.g., `npm test`, `pytest`, `curl`). 
 2. **Filesystem Check**: If a file was supposed to be created, verify it exists.
@@ -42,9 +42,9 @@ verdict: PASS | FAIL | PARTIAL
 ### ✅ {Must-have 1}
 **Status:** PASS
 **Evidence:** 
-`\``
+```text
 {command output or description}
-`\``
+```
 
 ### ❌ {Must-have 2}
 **Status:** FAIL
@@ -73,14 +73,24 @@ gap_closure: true
 ## Problem
 {What failed and why}
 
-## Tasks
-<task type="auto">
-  <name>Fix {issue}</name>
-  <files>{files to modify}</files>
-  <action>{specific fix instructions}</action>
-  <verify>{how to verify the fix}</verify>
-  <done>{acceptance criteria}</done>
-</task>
+## Task T-FIX-01: Fix {issue}
+| Skill | Effort | Type | Depends On | Priority |
+|---|---|---|---|---|
+| `/execute` | `medium` | `auto` | `—` | `high` |
+
+**Files:** `{files to modify}`
+
+### Action
+1. {specific fix instructions}
+
+### Verification
+- **Verify Command:** `{how to verify the fix}`
+- **Done Criteria:** `{acceptance criteria}`
+
+### Checkpoint
+- [ ] Update `.ai/DECISIONS.md` (or state `NO_DECISION — [summary]`)
+- [ ] Update `.ai/STATE.md` and `.ai/MEMORY.md`
+- [ ] Run: `git add -A && git commit -m "checkpoint: fix {issue}"`
 ```
 
 After generating the Gap Closure plans, explicitly prompt the user to run `/execute {N} --gaps-only` to implement the fixes.

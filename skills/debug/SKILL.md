@@ -19,12 +19,12 @@ Before running commands or touching code, evaluate the scope of the user's promp
 2. **Multi-Issue Punch List or Feature Mix** (3+ distinct bullet points, or a mix of bugs, UI tweaks, and new business logic):
    - **Stop inline debugging.** Attempting to fix a multi-item list in a single debugging turn causes silent regressions and skipped requirements.
    - **Optional Parallel Investigation**: If multiple independent subsystems are involved (e.g., scraper + API + UI state) and your tier allows it, use `/delegate` to spawn `/researcher` or `/investigator` subagents to locate the root cause of each subsystem before planning.
-   - **Handoff to `/refine`**: Read `skills/refine/SKILL.md` and execute its protocol starting at Step 2 (Codebase Research $\rightarrow$ Generate XML Plan in `.ai/refine/REFINE-PLAN.md` $\rightarrow$ Plan Review Gate). Every bullet point from the user's prompt must become a tracked `<task>`.
+   - **Handoff to `/refine`**: Read `skills/refine/SKILL.md` and execute its protocol starting at Step 2 (Codebase Research $\rightarrow$ Generate Structured Markdown Plan in `.ai/refine/REFINE-PLAN.md` $\rightarrow$ Plan Review Gate). Every bullet point from the user's prompt must become a tracked Markdown task.
 
 ## Auto-Include Policies (MANDATORY Pre-Flight)
-Before debugging, inspect the `<files>` listed in the task. If ANY file matches a condition below, you MUST load and apply the corresponding skill.
+Before debugging, inspect the `**Files:**` listed in the task. If ANY file matches a condition below, you MUST load and apply the corresponding skill.
 
-| Condition on `<files>` | Auto-Include Skill |
+| Condition on `**Files:**` | Auto-Include Skill |
 |---|---|
 | Bug is visual (layout, styling, animation, component rendering) — e.g., `*Screen.kt`, `*.jsx`, `*.css`, `*.xml` layout | Read `skills/ui-designer/SKILL.md` — apply platform rules to any UI fix written |
 | Bug involves auth flows, tokens, API keys, input validation, or data exposure | Read `skills/security/SKILL.md` — ensure the fix does not introduce a security regression |
@@ -59,7 +59,7 @@ Once you see the error, classify it:
 Before modifying an existing function or component to fix a logical bug, you MUST assess the "ripple effect":
 1. Consult `.ai/ARCHITECTURE.md` to identify which modules depend on the code you are about to change.
 2. Run targeted `grep` searches (or use AST-aware LSP tools like "Find References" if your client supports them) *only* inside those dependent modules. (If the problem persists or the architecture is unclear, you may fallback to a global `grep` search).
-3. **Escalation Check**: If your assessment reveals that fixing the bug requires changes across **3+ distinct architectural layers** (e.g., database schema + backend API + frontend state) or introduces new business logic, **do not apply an inline fix**. Escalate to `/refine` (`skills/refine/SKILL.md`), write a structured XML plan to `.ai/refine/REFINE-PLAN.md`, and wait for user approval.
+3. **Escalation Check**: If your assessment reveals that fixing the bug requires changes across **3+ distinct architectural layers** (e.g., database schema + backend API + frontend state) or introduces new business logic, **do not apply an inline fix**. Escalate to `/refine` (`skills/refine/SKILL.md`), write a Structured Markdown plan to `.ai/refine/REFINE-PLAN.md`, and wait for user approval.
 4. For localized fixes, update all dependent files simultaneously so you do not break the codebase.
 
 ## Step 6: Fix Constraints
@@ -72,6 +72,6 @@ These hooks fire automatically at specific points during debugging when conditio
 
 | Trigger Condition | Invoke | Action |
 |---|---|---|
-| Step 0 or Step 5 — prompt contains 3+ distinct issues OR root-cause fix requires changes across 3+ architectural layers | `/refine` | Read `skills/refine/SKILL.md`. Write a multi-task XML plan to `.ai/refine/REFINE-PLAN.md` and pause for user approval before editing code |
+| Step 0 or Step 5 — prompt contains 3+ distinct issues OR root-cause fix requires changes across 3+ architectural layers | `/refine` | Read `skills/refine/SKILL.md`. Write a multi-task Structured Markdown plan to `.ai/refine/REFINE-PLAN.md` and pause for user approval before editing code |
 | Step 3 — if 2 hypothesis cycles fail without identifying root cause | `/investigator` | Spawn an autonomous `/investigator` subagent via `/delegate` to adversarially generate competing hypotheses in parallel |
 | After fix is applied — if the fix changed function signatures or public API behavior | `/document` | Read `skills/document/SKILL.md`. Update affected docstrings to reflect the new behavior |
