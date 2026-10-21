@@ -36,14 +36,17 @@ You must present the 3 evaluated options to the user before writing the final pl
 Based on our `ARCHITECTURE.md` scope constraints, I have evaluated 3 potential approaches:
 
 ## Option 1: [Name] (Score: X/10)
+- **How it works:** [Concrete mechanics: step-by-step data flow, triggers, caching, and exact intervals/request counts]
 - **Why it fits:** ...
 - **Trade-offs:** ...
 
 ## Option 2: [Name] (Score: X/10)
+- **How it works:** [Concrete mechanics: step-by-step data flow, triggers, caching, and exact intervals/request counts]
 - **Why it fits:** ...
 - **Trade-offs:** ...
 
 ## Option 3: [Name] (Score: X/10)
+- **How it works:** [Concrete mechanics: step-by-step data flow, triggers, caching, and exact intervals/request counts]
 - **Why it fits:** ...
 - **Trade-offs:** ...
 
@@ -78,7 +81,7 @@ When the user provides new information or asks a question:
 
 Once the user gives an explicit selection signal:
 1. Write (or update) `.ai/ARCHITECTURE.md` with the finalized blueprint.
-2. Update `.ai/DECISIONS.md` with the architectural decision and rationale.
+2. Update `.ai/DECISIONS.md` with the architectural decision, rationale, and the exact **How it works** mechanics (including all intervals, limits, and caching rules) from the approved option.
 3. Update `.ai/SPEC.md` if requirements were refined during the discussion.
 4. **STOP.** Do NOT write code. Do NOT create execution plans. Do NOT route to the Coder Agent.
 5. Print the following handoff message:
@@ -86,7 +89,7 @@ Once the user gives an explicit selection signal:
 ```markdown
 > **AgentGate ► ARCHITECTURE FINALIZED**
 > ✓ Architecture written to .ai/ARCHITECTURE.md
-> ✓ Decision logged in .ai/DECISIONS.md
+> ✓ Decision & mechanics logged in .ai/DECISIONS.md
 > 
 > **NEXT STEP:** Run `/plan` to create your execution plan.
 ```
@@ -98,4 +101,3 @@ These hooks fire automatically at specific points during the architect workflow 
 |---|---|---|
 | Step 2 (LLM-as-a-Judge) — before generating 3 alternatives, if the problem domain requires external knowledge (new libraries, unfamiliar APIs, integration patterns) | `/researcher` | Spawn a read-only `/researcher` subagent via `/delegate` to explore existing codebase patterns and external documentation before generating options |
 </process>
-

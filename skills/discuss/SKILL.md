@@ -37,10 +37,12 @@ Present your findings to the user using the following format:
 
 ## Candidate Approaches
 **Approach A: [Name - Aligned with user premise]**
+- **How it works:** [Concrete mechanics: step-by-step data flow, triggers, caching, and exact intervals/request counts]
 - **Pros:** [Why it works]
 - **Cons/Risks:** [Why it might fail]
 
 **Approach B: [Name - Adversarial/Alternative premise]**
+- **How it works:** [Concrete mechanics: step-by-step data flow, triggers, caching, and exact intervals/request counts]
 - **Pros:** [Why it works better or avoids hidden risks]
 - **Cons/Risks:** [Why it might fail]
 
@@ -50,8 +52,9 @@ To help us lock in the exact right path, I need to know:
 2. [Targeted Question 2 regarding constraints or scope]
 ```
 
-## 4. Iterative Updating
+## 4. Iterative Updating & Decision Lock
 Wait for the user's answers. Update your candidate probabilities based on the evidence. Do NOT provide a final solution until a single explanation emerges as substantially stronger than the others.
+Once the user selects an approach, append the chosen approach and its exact **How it works** mechanics to `.ai/DECISIONS.md` so downstream `/plan` and `/execute` runs are locked to those parameters.
 
 ## 5. Transcript Size Tracking (Tier-Aware)
 During the discussion, you MUST track the length of the conversation transcript relative to your tier:
