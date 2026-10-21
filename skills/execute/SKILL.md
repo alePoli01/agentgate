@@ -29,10 +29,11 @@ Before executing, inspect the `<files>` listed in the task. If ANY file matches 
 > [!CAUTION]
 > Skipping an Auto-Include Policy because the task "seems simple" is a protocol violation. The detection is file-based, not judgment-based. If the file matches, the skill loads.
 
-## Step 1: Pre-Flight Check (The Standards Check)
-Before you write a single line of code, you MUST understand the project coding standards.
+## Step 1: Pre-Flight Check (Standards & Decisions Lock)
+Before you write a single line of code, you MUST understand the project coding standards and prior architectural decisions:
 - Run `python .ai/src/orchestrator.py --rules-for <filepath>` for the file you are about to edit. This auto-loads the correct language rules (project-specific or framework template).
-- **Rule**: You are strictly forbidden from violating the coding standards defined in these files.
+- Read `.ai/DECISIONS.md` to verify all locked architectural decisions, polling intervals, caching rules, and constraints.
+- **Rule**: You are strictly forbidden from violating the coding standards or overriding user-approved decisions in `.ai/DECISIONS.md`.
 
 ### Step 1a: UI Pre-Flight
 If the task involves user interface changes (creating/modifying views, layouts, styles, components):
@@ -59,11 +60,11 @@ You must read the `<task>` XML block provided by the planner (or generate one yo
 ## Step 2b: Effort-Based Behavior
 Check the `effort` attribute of the `<task>`. Your workflow adapts based on the effort level:
 
-| Effort | Blast Radius Check | Self-Critique | Architecture Sync |
+| Effort | Blast Radius Check | Self-Critique (3-Point Audit) | Architecture Sync |
 |---|---|---|---|
 | `low` | Skip (unless files touch >2 modules) | Skip | Skip |
-| `medium` | Required | Optional | Required if new files created |
-| `high` | Required + spawn `/researcher` subagent if >3 files in blast radius | Required | Always required |
+| `medium` | Required | **Required** | Required if new files created |
+| `high` | Required + spawn `/researcher` subagent if >3 files in blast radius | **Required** | Always required |
 
 
 > [!IMPORTANT]
@@ -124,7 +125,10 @@ You must prove your implementation works to pass the Evidence Gate. You MUST loa
 >   You MUST fix it before the Checkpoint Gate. **Do NOT commit broken code.**
 >   This is a blocking failure — treat it the same as a failing `<verify>` command.
 
-1. **Self-Critique**: If you are a Large tier model, you MUST evaluate your own code against the requirements and output the result in the `<self-critique>` XML node.
+1. **Self-Critique (3-Point Implementation Audit)**: For `medium` and `high` effort tasks, you MUST inspect the actual code you just wrote and output a `<self-critique>` XML node answering these three checks before running `<verify>`:
+   - **Check 1 — Docstring/Comment vs. Code (Anti-Stubbing)**: Read every comment and docstring in the files you edited. Is every branch, condition, or schedule described in your comments actually implemented in the code below it? (Writing a comment describing a 6h/90s condition and then calling a 1-line function unconditionally is a critical failure).
+   - **Check 2 — Constants & Cache Integrity**: Compare your code against `.ai/DECISIONS.md` and `<action>`. Did you preserve the user's exact intervals and caching strategy? Confirm you did NOT leave `force=True` or cache-bypass flags hardcoded in background jobs or production paths.
+   - **Check 3 — External API & Scheduler Safety**: If your code schedules a background task, loop, or external API/scraper call, verify that off-hours guards, TTL caching, and rate limits are active in code and explicitly asserted in the test suite.
 2. **Execute `<verify>`**: Use the Terminal to run the project's test suite, compile the code, or execute the curl command specified in the `<verify>` node.
 3. **Capture `<evidence>`**: Paste the literal `stdout` or `stderr` from the terminal directly into the `<evidence>` node. Do not say "it should work"—prove it. If the task is visual/untestable, output `MANUAL_VERIFICATION_REQUIRED`.
 
@@ -194,10 +198,10 @@ These hooks fire automatically at specific points during execution when conditio
 ## Condensed Execution Checklist for SMALL TIER
 If your tier banner reads `[TIER: SMALL]`, follow this stripped-down checklist to save tokens. Do not read the dense sections above unless necessary.
 
-1. **Pre-Flight**: Check `.ai/rules/` for standards.
+1. **Pre-Flight**: Check `.ai/rules/` for standards and `.ai/DECISIONS.md` for locked decisions.
 2. **Blast Radius**: Check `.ai/ARCHITECTURE.md` before changing logic.
 3. **Execution**: Write code.
    - *Zero-Trust Protocol*: If a tool fails, don't hide it. If a tool fuzzymatches, use `view_file` to verify. If you delete/rename a file/API, `grep` for the old name to clean up orphans.
-4. **Verification**: Run existing tests first (Regression Gate). Write new tests (see `test.md`). `<verify>` must prove the code works. `<evidence>` gets the raw output.
+4. **Verification**: Run existing tests first (Regression Gate). Verify docstrings match actual code and no `force=True` or unrequested timers exist. Write new tests (see `test.md`). `<verify>` must prove the code works. `<evidence>` gets the raw output.
 5. **Checkpoint**: Update `STATE.md`, `DECISIONS.md`, and run `git add -A && git commit -m`.
 6. **Sync**: Incrementally update `ARCHITECTURE.md` if you added files.

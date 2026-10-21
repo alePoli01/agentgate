@@ -17,7 +17,7 @@ priority: 1
 
 ## Step 0: Planning Lock & Roadmap Gate
 
-Before doing ANYTHING else, run these two checks:
+Before doing ANYTHING else, run these three checks:
 
 **Check A — Spec Lock:**
 Read `.ai/SPEC.md`. If it does not contain the exact string `Status: FINALIZED`, STOP immediately and respond:
@@ -28,6 +28,10 @@ Do not proceed past this point.
 Read `.ai/ROADMAP.md`. Find the current phase entry. Locate its `Depends on:` field.
 For each phase listed as a dependency, verify its **Status** line reads `✅ Complete`.
 If any dependency is NOT complete, STOP and respond with a list of the blocking phases.
+
+**Check C — Decisions & Anti-Gold-Plating Lock:**
+Read `.ai/DECISIONS.md`. Every task you generate MUST strictly respect the architectural choices, polling intervals, caching strategies, and constraints logged in `DECISIONS.md` and stated by the user.
+- **No Unrequested Scope ("Gold-Plating")**: Do NOT invent background workers, aggressive polling loops (e.g. changing a 6-hour interval to 90 seconds), or extra features that were not explicitly requested by the user or recorded in `DECISIONS.md`.
 
 ## Step 0.5: Discovery Protocol (Context Budgeting)
 
@@ -86,7 +90,7 @@ For any technology where the user does NOT provide explicit rules, you MUST defi
 > By generating this file, you are creating the permanent source of truth for how this technology should be written in this project. You will be strictly graded against these files during execution.
 
 ## Step 5: Adaptive Routing (XML Task Generation)
-You must break down the implementation into `<task>` XML blocks. You MUST use the exact schema defined below. Do not invent your own tags (like `<description>` or `<instructions>`).
+You must break down the implementation into `<task>` XML blocks using the exact Planning Schema below. Do not invent your own tags (like `<description>` or `<instructions>`), and **do NOT pre-fill `<self-critique>` or `<evidence>`** (those are generated at execution time after the code is written).
 
 ```xml
 <task type="auto|manual" effort="low|medium|high" skill="execute|debug|verify|refactor|test|review|security">
@@ -95,13 +99,9 @@ You must break down the implementation into `<task>` XML blocks. You MUST use th
   <priority>high|normal|low</priority> <!-- Optional -->
   <files>exact/path/to/file.ts</files>
   <action>
-    Specific implementation instructions.
+    Specific implementation instructions honoring .ai/DECISIONS.md.
   </action>
-  <self-critique>
-    [Cloud-Only] Did I actually meet the requirements? Are there edge cases?
-  </self-critique>
   <verify>executable command that proves completion</verify>
-  <evidence>curl output | test output | MANUAL_VERIFICATION_REQUIRED</evidence>
   <checkpoint>
     - Update .ai/DECISIONS.md if an architectural decision was made
     - Update .ai/STATE.md Current Position to reflect this task is done
@@ -134,9 +134,10 @@ Once the plan is generated (either inline or via file) and all language-specific
 ```markdown
 > **AgentGate ► PLANNING COMPLETE**
 > ✓ Plan generated at `.ai/phases/X/Y-PLAN.md`
+> ✓ Verified against `.ai/DECISIONS.md` and `.ai/SPEC.md`
 > ✓ Coding standards verified in `.ai/rules/`
 > 
-> **NEXT STEP:** Run `/execute` to begin implementation.
+> **NEXT STEP:** Review the plan file, then run `/execute` to begin implementation.
 ```
 
 ---
@@ -146,6 +147,8 @@ Once the plan is generated (either inline or via file) and all language-specific
 For each plan generated, you MUST verify:
 - [ ] All files specified exist or will be created
 - [ ] Actions are specific (no "implement X")
+- [ ] Every action strictly matches `.ai/DECISIONS.md` and user instructions (zero unrequested timers, polling loops, or gold-plated features)
+- [ ] `<self-critique>` and `<evidence>` are NOT pre-filled in the plan
 - [ ] Verify commands are executable
 - [ ] Done criteria are measurable
 - [ ] Context references exist
