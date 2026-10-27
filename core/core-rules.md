@@ -124,6 +124,7 @@ These are the commands the user can explicitly invoke. You may suggest these to 
 |---|---|
 | `/refine` | Decompose a raw, vague prompt. Acts as Tech Lead — researches codebase and creates a Markdown execution plan |
 | `/plan` | Break a known feature/change into Structured Markdown Tasks, review with user, and prepare for execution |
+| `/refactor` | Refactor code or extract monoliths into modular files without changing behavior (requires existing tests) |
 | `/debug` | User provides a crash, error, stack trace, or says "it doesn't work" |
 | `/architect` | User doesn't know HOW to build something. Generates and scores 3 distinct options |
 | `/map` | Generate or update `.ai/ARCHITECTURE.md` with Mermaid diagrams |
