@@ -32,3 +32,14 @@ fn parse_id(s: &str) -> Result<u32, ParseIntError> {
 ## Tool Recommendations
 - Linter: `clippy`
 - Formatter: `rustfmt`
+
+## Project Structure & Modularity (core-rules §11)
+Organize modules by clear layer boundaries:
+- pi/ or handlers/: Route handlers and serialization.
+- service/: Domain logic and trait implementations.
+- client/: External HTTP/API clients.
+- models/: Structs, enums, and serde definitions.
+
+**Rules**:
+- Keep files under ~300 lines and functions under ~50 lines.
+- Break large modules into directory modules with mod.rs or separate files.

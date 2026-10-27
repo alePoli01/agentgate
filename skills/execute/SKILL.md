@@ -60,7 +60,7 @@ You must read the Structured Markdown Task block provided by the planner (or gen
 ## Step 2b: Effort-Based Behavior
 Check the `Effort` column in the task's metadata table. Your workflow adapts based on the effort level:
 
-| Effort | Blast Radius Check | Self-Critique (3-Point Audit) | Architecture Sync |
+| Effort | Blast Radius Check | Self-Critique (4-Point Audit) | Architecture Sync |
 |---|---|---|---|
 | `low` | Skip (unless files touch >2 modules) | Skip | Skip |
 | `medium` | Required | **Required** | Required if new files created |
@@ -125,10 +125,13 @@ You must prove your implementation works to pass the Evidence Gate. You MUST loa
 >   You MUST fix it before the Checkpoint Gate. **Do NOT commit broken code.**
 >   This is a blocking failure — treat it the same as a failing `Verify Command`.
 
-1. **Self-Critique (3-Point Implementation Audit)**: For `medium` and `high` effort tasks, you MUST inspect the actual code you just wrote and output a `### Self-Critique (3-Point Audit)` Markdown section answering these three checks before running `Verify Command`:
+1. **Self-Critique (4-Point Implementation & Modularity Audit)**: For `medium` and `high` effort tasks, you MUST inspect the actual code you just wrote and output a `### Self-Critique (4-Point Audit)` Markdown section answering these four checks before running `Verify Command`:
    - **Check 1 — Docstring/Comment vs. Code (Anti-Stubbing)**: Read every comment and docstring in the files you edited. Is every branch, condition, or schedule described in your comments actually implemented in the code below it? (Writing a comment describing a 6h/90s condition and then calling a 1-line function unconditionally is a critical failure).
    - **Check 2 — Constants & Cache Integrity**: Compare your code against `.ai/DECISIONS.md` and `### Action`. Did you preserve the user's exact intervals and caching strategy? Confirm you did NOT leave `force=True` or cache-bypass flags hardcoded in background jobs or production paths.
    - **Check 3 — External API & Scheduler Safety**: If your code schedules a background task, loop, or external API/scraper call, verify that off-hours guards, TTL caching, and rate limits are active in code and explicitly asserted in the test suite.
+   - **Check 4 — Modularity & Separation of Concerns (core-rules §11)**:
+     - *New Code*: Did you separate distinct layers (e.g. API clients, business logic, endpoints, models) into dedicated files? Are new files under ~300 lines and functions under ~50 lines?
+     - *Existing Code*: Did you avoid performing an unsolicited, inline refactoring of an existing monolithic file (avoiding circular imports and messy diffs)? If adding a new responsibility, did you place it in a new module and pass shared dependencies as parameters?
 2. **Execute `Verify Command`**: Use the Terminal to run the project's test suite, compile the code, or execute the command specified in `### Verification`.
 3. **Capture `### Evidence`**: Paste the literal `stdout` or `stderr` from the terminal directly into a `### Evidence` code block. Do not say "it should work"—prove it. If the task is visual/untestable, output `MANUAL_VERIFICATION_REQUIRED`.
 

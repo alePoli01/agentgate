@@ -33,3 +33,16 @@ public Optional<User> findUser(String id) {
 ## Tool Recommendations
 - Linter: `Checkstyle` or `SonarLint`
 - Formatter: `Spotless`
+
+## Project Structure & Modularity (core-rules §11)
+Organize packages by architectural layer:
+- controller/: REST controllers and request mapping.
+- service/: Business logic and transactional services.
+- client/: External service clients and web client configs.
+- model/ or dto/: Domain models and transfer objects.
+- 
+epository/: Persistence layer.
+
+**Rules**:
+- Keep files under ~300 lines and methods under ~50 lines.
+- Exactly one top-level class or record per file.

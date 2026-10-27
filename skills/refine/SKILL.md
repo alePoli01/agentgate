@@ -35,6 +35,8 @@ Read the task schema from `core/task-schema.md`. Produce a full Structured Markd
 - `### Verification`: an executable `Verify Command` and measurable `Done Criteria`
 - `### Checkpoint`: the standard checkpoint checklist
 
+**Modular File Design Rule** (core-rules §11): Assign files by responsibility layer. Separate API clients, business logic, endpoints, and UI into dedicated files. If touching an existing monolith, make minimal changes in-place without relocating code, and place any new responsibilities into dedicated modules.
+
 > [!IMPORTANT]
 > **Never drop or merge user requirements.** You may rephrase a requirement to make it technically precise — but every bullet point the user wrote must produce at least one task block. Merging two requirements into one vague task or omitting a requirement entirely is what causes silent regressions.
 

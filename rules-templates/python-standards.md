@@ -39,3 +39,16 @@ def process_data(data: List[str], results: Optional[List[str]] = None) -> List[s
 ## Tool Recommendations
 - Linter/Formatter: `ruff`
 - Type Checker: `mypy`
+
+## Project Structure & Modularity (core-rules §11)
+Organize code strictly by responsibility layer. Never create monolithic files mixing multiple concerns:
+- pi/ or 
+outers/: Endpoints and HTTP route handlers only.
+- services/: Business logic, domain rules, calculation engines.
+- clients/: External API clients, scrapers, third-party wrappers.
+- models/ or schemas/: Pydantic models, dataclasses, ORM models.
+- core/ or config.py: Configuration and constants.
+
+**Rules**:
+- Keep files under ~300 lines and functions under ~50 lines.
+- New responsibilities MUST be placed in dedicated modules. Pass dependencies as parameters to avoid circular imports.

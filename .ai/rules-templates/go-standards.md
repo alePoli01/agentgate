@@ -39,3 +39,15 @@ func ReadFile(path string) (string, error) {
 ## Tool Recommendations
 - Linter: `golangci-lint`
 - Formatter: `gofmt` or `goimports`
+
+## Project Structure & Modularity (core-rules §11)
+Organize packages by domain and single responsibility:
+- cmd/: Application entry points (main.go).
+- internal/api/ or handler/: HTTP/gRPC handlers and routers.
+- internal/service/: Core domain logic and interfaces.
+- internal/client/: External HTTP/RPC clients.
+- internal/model/: Domain structs and data types.
+
+**Rules**:
+- Keep files under ~300 lines and functions under ~50 lines.
+- Avoid 'util' or 'common' dumping grounds; create cohesive, single-purpose packages.

@@ -16,6 +16,7 @@ priority: 0
 8. [Universal Position Lock](#8-universal-position-lock)
 9. [The Universal 3-Strike Rule](#9-the-universal-3-strike-rule)
 10. [Native IDE Override Mandate](#10-native-ide-override-mandate)
+11. [Modular Code Mandate](#11-modular-code-mandate)
 
 ---
 
@@ -219,3 +220,42 @@ The AgentGate framework completely supersedes the host IDE's native workflow.
 - **ALWAYS** use AgentGate's Structured Markdown Task schema within `.ai/phases/X/Y-PLAN.md` files for planning.
 
 If you ever find yourself editing a file named `task.md` or `implementation_plan.md` (especially in an `.appDataDir` or `.brain` folder), you have violated the AgentGate framework. Stop immediately and revert to `.ai/STATE.md`.
+
+
+---
+
+## 11. Modular Code Mandate
+
+> [!IMPORTANT]
+> **One file, one responsibility.** Monolithic files are hard to review, hard to test, and they make every future change riskier. All new code MUST be split by function.
+
+### Responsibility Layers
+Code belonging to different layers MUST live in different files (or modules/folders):
+
+| Layer | Examples |
+|---|---|
+| **Entry / Routing** | API endpoints, CLI commands, app bootstrap (`main.py`, `App.jsx`) |
+| **Business Logic** | Calculations, rules, transformations (e.g. rating engine, bench substitution) |
+| **External Clients** | HTTP clients, scrapers, third-party SDK wrappers |
+| **Data / Persistence** | Models, schemas, DB access, caches |
+| **Scheduling / Background** | Pollers, cron jobs, workers |
+| **UI** | Components, hooks, styles — one component per file |
+| **Config** | Settings, constants, environment loading |
+
+The entry file only wires layers together. It does not contain business logic, client code, or scheduling logic.
+
+### Objective Thresholds
+These limits are measurable so they are not left to judgment:
+- A file that **mixes more than one layer** MUST be split, regardless of length.
+- A file over **~300 lines** MUST be split by responsibility.
+- A function over **~50 lines** MUST be broken into smaller, named functions.
+
+### New Code vs. Existing Monoliths
+- **New code**: always follows the layers and thresholds above. When a task introduces a new responsibility, it goes in a new file, even if it is called from an existing monolith. Pass dependencies (`app`, `db`, config, clients) as parameters instead of importing them from the entry file — this prevents circular imports.
+- **Existing monoliths**: do NOT move existing code while implementing a feature or a bug fix. Mixing relocation with logic changes makes the diff unreviewable and risks circular imports in files that rely on shared globals. Make the minimal change in place, then report the monolith to the user (file, size, mixed layers) and recommend a dedicated `/refactor` task. Extraction of existing code happens only inside `/refactor`.
+
+### Where This Is Enforced
+- `/plan` and `/refine`: each task's `**Files:**` list separates responsibilities, and the Plan Checker rejects tasks that put multiple layers in one file.
+- `/execute` and `/debug`: Self-Critique Check 4 verifies modularity before running `Verify Command`.
+- `.ai/rules/<lang>-standards.md`: the `Project Structure` section defines the concrete folder layout for each language.
+- `/sweep`: flags existing monoliths as refuse.

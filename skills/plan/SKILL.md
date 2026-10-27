@@ -123,6 +123,11 @@ Break down the implementation into Structured Markdown Tasks inside `.ai/phases/
 
 A single plan file CAN and SHOULD mix different skills.
 
+**Modular File Design Rule** (see `core/core-rules.md` §11): The `**Files:**` list is where file structure is decided, so design it by responsibility:
+- Each new responsibility (client, business logic, scheduler, endpoint, UI component, config) gets its own file. Do not assign two layers to the same file.
+- Follow the `Project Structure` section of `.ai/rules/<lang>-standards.md` for folder placement.
+- If a task must touch an existing monolith, keep the change minimal in place and add a note under `### Action`: `Existing monolith: [file] — do not relocate existing code; recommend /refactor`. New responsibilities still go in new files.
+
 ---
 
 ## Step 6: Plan Checker Logic (Self-Validation)
@@ -132,6 +137,7 @@ Before showing the plan to the user, verify:
 - [ ] Actions are specific (no "implement X")
 - [ ] Every action strictly matches `.ai/DECISIONS.md` and user instructions (zero unrequested timers, polling loops, or gold-plated features)
 - [ ] `Self-Critique` and `Evidence` are NOT pre-filled in the plan
+- [ ] No task assigns more than one responsibility layer to a single new file (core-rules §11), and no task relocates existing code outside a `/refactor` task
 - [ ] Verify commands are executable and test real behavior (see Test Quality Rules below)
 - [ ] Done criteria are measurable
 

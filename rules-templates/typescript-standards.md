@@ -36,3 +36,15 @@ function getUser(id: number): User | null {
 ## Tool Recommendations
 - Linter: `eslint` with `@typescript-eslint`
 - Formatter: `prettier`
+
+## Project Structure & Modularity (core-rules §11)
+Organize code strictly by responsibility layer. Never mix UI components, state management, and network calls:
+- components/: UI components (strictly one component per file).
+- hooks/: Custom state management and lifecycle hooks.
+- pi/ or services/: Fetch wrappers and API clients.
+- 	ypes/: Type definitions and interfaces.
+- utils/: Pure utility functions and formatters.
+
+**Rules**:
+- Keep files under ~300 lines and components/functions under ~50 lines.
+- Extract sub-components, modals, and list items into dedicated files rather than nesting them in large views.

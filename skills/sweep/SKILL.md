@@ -41,6 +41,7 @@ Every `AUDITOR` subagent dispatched MUST check for ALL of the following:
 | **Stale References** | References to deleted files, functions, or renamed APIs | Partial (grep + context) |
 | **Doc ↔ Code Drift** | Contradictions between docstrings/comments and actual implementation | ❌ No (requires reasoning) |
 | **Frankenstein Code** | Mixed architectural patterns (legacy + modern in same file) | ❌ No (requires reasoning) |
+| **Monolithic Files** | Files >300 lines mixing multiple layers (routes, logic, API clients) per core-rules §11 | Partial (wc -l + reasoning) |
 | **Orphaned Config** | Config keys, env vars, or constants no longer referenced | Partial (grep) |
 
 The subagent briefing MUST include this checklist verbatim so it knows exactly what to look for.

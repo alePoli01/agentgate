@@ -31,3 +31,14 @@ public async Task<User?> GetUserAsync(int id, CancellationToken ct = default)
 
 ## Tool Recommendations
 - Linter/Formatter: `dotnet format`, Roslyn analyzers
+
+## Project Structure & Modularity (core-rules §11)
+Organize code following Clean Architecture or Feature Folders:
+- Controllers/ or Endpoints/: API request dispatching and validation.
+- Services/: Business logic and orchestration.
+- Clients/: External service integrations and HTTP clients.
+- Models/ or Entities/: Domain entities and DTOs.
+
+**Rules**:
+- Keep files under ~300 lines and methods under ~50 lines.
+- Exactly one class/record per file, matching the file name.
