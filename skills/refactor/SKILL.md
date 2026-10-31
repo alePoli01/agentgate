@@ -1,12 +1,12 @@
 ---
 name: "refactor"
-description: "The Safe Refactoring Protocol. Ensures behavioral-preserving refactors backed by tests."
+description: "The Safe Refactoring Protocol. Ensures behavioral-preserving refactors and monolith decomposition backed by tests."
 environment_target: "universal"
 priority: 2
 ---
 # The Safe Refactoring Protocol
 
-**Trigger**: The user asks to refactor, clean up, or reorganize code, or explicitly typed `/refactor`.
+**Trigger**: The user asks to refactor, clean up, or reorganize code, explicitly typed `/refactor`, or a Workflow Hook in `/debug` or `/execute` detected a file exceeding ~300 lines.
 
 > [!CAUTION]
 > A refactor MUST NOT change observable behavior. If you are adding features or fixing bugs at the same time, it is NOT a refactor.
@@ -36,23 +36,29 @@ python -m unittest discover tests/ -v
 ```
 - If the tests fail *before* you start, STOP. Inform the user and ask if they want to `/debug` the failure first. You cannot safely refactor broken code.
 
-## Step 3: Blast Radius Assessment
-1. Check `.ai/ARCHITECTURE.md`.
-2. Determine what modules depend on the code you are refactoring.
-3. Keep the refactor scope as narrow as possible. Do not boil the ocean.
+## Step 3: Cohesion & Blast Radius Assessment
+1. **Check `.ai/ARCHITECTURE.md`**: Determine what external modules depend on the file you are refactoring.
+2. **Cohesion Analysis (When splitting a >300-line file)**:
+   - List all functions/methods inside the file and group them by responsibility (e.g., in an API client file: session/auth management vs. raw HTML/JSON parsing helpers vs. data normalization).
+   - Decide which functions belong to the file's core responsibility and which cohesive group of helper functions should be extracted into a dedicated module (e.g. extracting HTML parsers from `fantacalcio_client.py` into `fantacalcio_parsers.py`).
+   - Verify dependency direction: extracted modules must NEVER import back from the parent file (zero circular imports).
+3. Keep the refactor scope focused on the target file and its extracted modules. Do not boil the ocean.
 
 ## Step 4: The Refactor Execution
 Make the structural or stylistic changes.
-- Use surgical chunk replacements rather than rewriting entire files if possible.
-- Ensure the API signature/contract remains identical unless the refactor explicitly requires changing it (and all dependents are updated simultaneously).
+- Extract the identified cohesive function groups into their new module(s) and import them cleanly into the original file.
+- Preserve existing public signatures/re-exports on the original module if external callers or tests import them directly, so the external contract remains 100% compatible.
 
 ## Step 5: Post-Refactor Verification
 Run the exact same test suite again.
 - If the tests fail, you have introduced a regression. You MUST fix it immediately or revert your changes.
+- Verify that all resulting files are now under the ~300-line modularity threshold (`core-rules §11`).
 - Do NOT mark the task COMPLETE or commit the code if the tests do not pass.
 
-## Step 6: Commit
-Once tests are green, commit the change:
+## Step 6: Commit & Architecture Sync
+Once tests are green:
+1. Update `.ai/ARCHITECTURE.md` if new modules were created.
+2. Commit the change:
 ```bash
 git add -A && git commit -m "refactor: [component] [reason]"
 ```

@@ -127,11 +127,11 @@ You must prove your implementation works to pass the Evidence Gate. You MUST loa
 
 1. **Self-Critique (4-Point Implementation & Modularity Audit)**: For `medium` and `high` effort tasks, you MUST inspect the actual code you just wrote and output a `### Self-Critique (4-Point Audit)` Markdown section answering these four checks before running `Verify Command`:
    - **Check 1 — Docstring/Comment vs. Code (Anti-Stubbing)**: Read every comment and docstring in the files you edited. Is every branch, condition, or schedule described in your comments actually implemented in the code below it? (Writing a comment describing a 6h/90s condition and then calling a 1-line function unconditionally is a critical failure).
-   - **Check 2 — Constants & Cache Integrity**: Compare your code against `.ai/DECISIONS.md` and `### Action`. Did you preserve the user's exact intervals and caching strategy? Confirm you did NOT leave `force=True` or cache-bypass flags hardcoded in background jobs or production paths.
+   - **Check 2 — Constants, Cache & Test-Data Isolation**: Compare your code against `.ai/DECISIONS.md` and `### Action`. Did you preserve the user's exact intervals and caching strategy? Confirm you did NOT leave `force=True` or cache-bypass flags hardcoded in background jobs, NEVER fell back to test fixtures (`fixtures/`, `real_fixtures/`, `mock_*`) inside production code, and isolated all test disk writes via `tmp_path` so tests never touch production state files.
    - **Check 3 — External API & Scheduler Safety**: If your code schedules a background task, loop, or external API/scraper call, verify that off-hours guards, TTL caching, and rate limits are active in code and explicitly asserted in the test suite.
    - **Check 4 — Modularity & Separation of Concerns (core-rules §11)**:
      - *New Code*: Did you separate distinct layers (e.g. API clients, business logic, endpoints, models) into dedicated files? Are new files under ~300 lines and functions under ~50 lines?
-     - *Existing Code*: Did you avoid performing an unsolicited, inline refactoring of an existing monolithic file (avoiding circular imports and messy diffs)? If adding a new responsibility, did you place it in a new module and pass shared dependencies as parameters?
+     - *Existing Code*: Did you avoid performing an unsolicited, inline refactoring of an existing monolithic file while writing the feature? If adding a modified file caused it to exceed ~300 lines, finish verification first and then trigger the **`/refactor` Workflow Hook** below to analyze the file and extract cohesive functions into a separate module.
 2. **Execute `Verify Command`**: Use the Terminal to run the project's test suite, compile the code, or execute the command specified in `### Verification`.
 3. **Capture `### Evidence`**: Paste the literal `stdout` or `stderr` from the terminal directly into a `### Evidence` code block. Do not say "it should work"—prove it. If the task is visual/untestable, output `MANUAL_VERIFICATION_REQUIRED`.
 
@@ -192,6 +192,7 @@ These hooks fire automatically at specific points during execution when conditio
 
 | Trigger Condition | Invoke | Action |
 |---|---|---|
+| After Verification (Step 5) — if any modified file exceeds ~300 lines or mixes multiple responsibilities | `/refactor` | Read `skills/refactor/SKILL.md`. Analyze the file's cohesion: determine which functions belong in the file vs. which should be extracted into dedicated modules, and execute the safe refactoring with tests green |
 | After Checkpoint Gate (Step 6) — if you created new public functions, APIs, or classes | `/document` | Read `skills/document/SKILL.md`. Generate inline docstrings and update README if applicable |
 | Step 3 (Blast Radius) — if you are **[TIER: SMALL]** and >3 files are in the blast radius | `/researcher` | Delegate blast-radius exploration to a read-only `/researcher` subagent via `/delegate` to preserve your main context |
 
